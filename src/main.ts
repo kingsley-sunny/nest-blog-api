@@ -11,6 +11,7 @@ class Server {
     app.useGlobalFilters(new HttpExceptionFilter());
 
     await app.listen(8080);
+    console.log('Stared Server on port 8080');
   }
 }
 
