@@ -1,5 +1,5 @@
 {
-  "name": "blog-api",
+  "name": "blog_app_api",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -8,6 +8,10 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "mg:up": "knex migrate:up",
+    "mg:down": "knex migrate:down",
+    "mg:rollback": "knex migrate:rollback",
+    "mg:make": "knex migrate:make",
     "start": "nest start",
     "dev": "nest start --watch",
     "dev:debug": "nest start --debug --watch",
@@ -20,6 +24,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
