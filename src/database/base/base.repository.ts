@@ -6,6 +6,16 @@ const NO_OF_LIMITED_QUERIES = 10;
 export abstract class BaseRepository<ModelInterface = any> {
   protected constructor(public model: ModelClass<Model>) {}
 
+  async create(data: ModelInterface) {
+    const response = await this.model.transaction(async (trx) => {
+      const createdData = await this.model.query(trx).insertAndFetch(data);
+
+      return createdData;
+    });
+
+    return response;
+  }
+
   async find(
     model?: ModelInterface,
     params?: FetchQuery,

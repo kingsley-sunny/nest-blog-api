@@ -31,7 +31,23 @@ export class AppController {
       params,
     );
 
-    const user = await this.userRepository.update(3, { user_name: 'Nacking' });
+    const fakeUser = {
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      email: faker.internet.email(),
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+    };
+
+    const { firstName, email, lastName, username, password } = fakeUser;
+
+    const user = await this.userRepository.create({
+      email,
+      last_name: lastName,
+      user_name: username,
+      password,
+      first_name: firstName,
+    });
 
     return this.baseService.transformResponse(user, 'Successful');
   }
