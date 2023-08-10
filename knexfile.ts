@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import { join } from 'path';
-import { EnvironmentService } from './src/config/environment/environment.service';
+import { EnvironmentService } from './src';
 
 dotenv.config();
 

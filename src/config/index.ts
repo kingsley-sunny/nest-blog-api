@@ -1,1 +1,1 @@
-export const n = 'hello';
+export * from './environment';
