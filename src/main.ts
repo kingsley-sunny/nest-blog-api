@@ -1,7 +1,11 @@
 import { NestFactory } from '@nestjs/core';
+import * as dotenv from 'dotenv';
 import { AppModule } from './app.module';
+import { EnvironmentService } from './config/environment/environment.service';
 import { HttpExceptionFilter } from './exceptions/http-exception';
 import { ResponseInterceptor } from './interceptors/response-interceptor';
+
+dotenv.config();
 
 class Server {
   static async bootstrap() {
@@ -10,7 +14,7 @@ class Server {
     app.useGlobalInterceptors(new ResponseInterceptor());
     app.useGlobalFilters(new HttpExceptionFilter());
 
-    await app.listen(8080);
+    await app.listen(EnvironmentService.getValue('appPort'));
     console.log('Stared Server on port 8080');
   }
 }

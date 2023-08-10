@@ -31,23 +31,25 @@ export class AppController {
       params,
     );
 
-    const fakeUser = {
-      firstName: faker.person.firstName(),
-      lastName: faker.person.lastName(),
-      email: faker.internet.email(),
-      username: faker.internet.userName(),
-      password: faker.internet.password(),
-    };
+    const user = await this.userRepository.findById(23);
 
-    const { firstName, email, lastName, username, password } = fakeUser;
+    // const fakeUser = {
+    //   firstName: faker.person.firstName(),
+    //   lastName: faker.person.lastName(),
+    //   email: faker.internet.email(),
+    //   username: faker.internet.userName(),
+    //   password: faker.internet.password(),
+    // };
 
-    const user = await this.userRepository.create({
-      email: email,
-      first_name: firstName,
-      last_name: lastName,
-      user_name: username,
-      password: password,
-    });
+    // const { firstName, email, lastName, username, password } = fakeUser;
+
+    // const user = await this.userRepository.create({
+    //   email: email,
+    //   first_name: firstName,
+    //   last_name: lastName,
+    //   user_name: username,
+    //   password: password,
+    // });
 
     return this.baseService.transformResponse(user, 'Successful');
   }

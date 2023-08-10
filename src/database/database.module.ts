@@ -3,18 +3,18 @@ import Knex from 'knex';
 import { Model } from 'objection';
 import KnexConfig from '../../knexfile';
 
-// Initialize knex.
-export const knex = Knex(KnexConfig);
-console.log('🚀 ~~ file: database.module.ts:16 ~~ knex:', Model.knex(knex));
-
 @Global()
 @Module({
   imports: [],
   providers: [
     {
       useFactory: () => {
+        // Initialize knex.
+        const knex = Knex(KnexConfig);
         // Give Instance of knex to the Objection
         Model.knex(knex);
+
+        console.log('Successfully Created connection with the database');
 
         return knex;
       },

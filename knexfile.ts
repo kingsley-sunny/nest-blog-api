@@ -1,15 +1,20 @@
+import * as dotenv from 'dotenv';
 import { join } from 'path';
+import { EnvironmentService } from './src/config/environment/environment.service';
 
-console.log('🚀 ~~ file: knexfile.ts:2 ~~ path:', join);
+dotenv.config();
+
+const { dbHost, dbPort, dbUser, dbPassword, dbName } =
+  EnvironmentService.getValues();
 
 const KnexConfig = {
   client: 'mysql2',
   connection: {
-    host: '127.0.0.1',
-    port: 3306,
-    user: 'root',
-    password: 'bosslikeme',
-    database: 'blog_app',
+    host: dbHost,
+    port: dbPort,
+    user: dbUser,
+    password: dbPassword,
+    database: dbName,
   },
   migrations: {
     directory: join(__dirname, 'src', 'database', 'migrations'),
