@@ -1,5 +1,10 @@
 import { randomUUID } from 'crypto';
-import { Model, ModelOptions, QueryContext } from 'objection';
+import {
+  Model,
+  ModelOptions,
+  QueryContext,
+  StaticHookArguments,
+} from 'objection';
 
 export class BaseModel extends Model {
   async $beforeInsert(queryContext: QueryContext): Promise<any> {
@@ -15,5 +20,27 @@ export class BaseModel extends Model {
     queryContext: QueryContext,
   ): Promise<any> {
     queryContext.transaction.update({ updated_at: Date.now() });
+  }
+
+  static afterInsert(args: StaticHookArguments<any, any>) {
+    const result = args.result[0];
+
+    if (result.password) {
+      delete result.password;
+    }
+
+    return result;
+  }
+
+  static async afterFind(args: StaticHookArguments<any, any>) {
+    const result = args.result.map((data) => {
+      if (data.password) {
+        delete data.password;
+      }
+
+      return data;
+    });
+
+    return result;
   }
 }

@@ -17,12 +17,15 @@ export abstract class BaseRepository<ModelInterface = any> {
   }
 
   async find(
-    model?: ModelInterface,
+    model?: Partial<ModelInterface>,
     params?: FetchQuery,
   ): Promise<Objection.Model[]> {
     const limit = params?.limit ?? NO_OF_LIMITED_QUERIES;
 
-    let result = this.model.query().where(model).limit(limit);
+    let result = this.model
+      .query()
+      .where(model ?? {})
+      .limit(limit);
 
     if (params?.page) {
       result = result.offset(limit * (params.page - 1 ?? 1));
@@ -50,7 +53,7 @@ export abstract class BaseRepository<ModelInterface = any> {
     return result as any as Objection.Model[];
   }
 
-  async findOne(model?: ModelInterface, params?: FetchQuery) {
+  async findOne(model: Partial<ModelInterface>, params?: FetchQuery) {
     const limit = params?.limit ?? NO_OF_LIMITED_QUERIES;
 
     let result = this.model.query().findOne(model).limit(limit);

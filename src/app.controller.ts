@@ -42,11 +42,11 @@ export class AppController {
     const { firstName, email, lastName, username, password } = fakeUser;
 
     const user = await this.userRepository.create({
-      email,
+      email: email,
+      first_name: firstName,
       last_name: lastName,
       user_name: username,
-      password,
-      first_name: firstName,
+      password: password,
     });
 
     return this.baseService.transformResponse(user, 'Successful');
