@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import * as dotenv from 'dotenv';
-import { IEnvironment } from './environment.interface';
+import * as env from 'dotenv';
+import { EnvironmentInterface } from './environment.interface';
 
-dotenv.config();
+env.config();
 
 @Injectable()
 export class EnvironmentService {
-  public static getValues(): IEnvironment {
-    const { TZ, APP_PORT, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT, DB_HOST } =
+  public static getValues(): EnvironmentInterface {
+    const { APP_PORT, DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT } =
       process.env;
 
     return {
@@ -15,12 +15,15 @@ export class EnvironmentService {
       dbHost: DB_HOST,
       dbName: DB_NAME,
       dbPassword: DB_PASSWORD,
-      dbPort: DB_PORT as any,
+      dbPort: DB_PORT,
       dbUser: DB_USER,
     };
   }
 
-  public static getValue(value: keyof IEnvironment): any {
-    return this.getValues()[value];
+  /**
+   * name
+   */
+  public static getValue(value: keyof EnvironmentInterface) {
+    return this.getValues[value];
   }
 }

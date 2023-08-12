@@ -1,6 +1,6 @@
-import { EnvironmentService } from './src';
+import { EnvironmentService } from './src/config/environment/environment.service';
 
-const { dbHost, dbPort, dbUser, dbPassword, dbName } =
+const { appPort, dbHost, dbName, dbPassword, dbPort, dbUser } =
   EnvironmentService.getValues();
 
 const KnexConfig = {
@@ -12,16 +12,15 @@ const KnexConfig = {
     password: dbPassword,
     database: dbName,
   },
-  pool: {
-    min: 0,
-    max: 10,
-  },
   migrations: {
     directory: './src/database/migrations',
     database: 'mysql',
     extension: 'ts',
   },
-  debug: true,
+  seeds: {
+    directory: './src/database/seeds',
+    extension: 'ts',
+  },
 };
 
 export default KnexConfig;

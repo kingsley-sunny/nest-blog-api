@@ -1,8 +1,8 @@
-export interface IEnvironment {
-  appPort: string;
-  dbPort: number;
+export interface EnvironmentInterface {
   dbUser: string;
-  dbPassword: string;
   dbName: string;
+  dbPort: string;
+  dbPassword: string;
   dbHost: string;
+  appPort: string;
 }

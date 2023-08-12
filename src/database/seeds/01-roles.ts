@@ -5,8 +5,8 @@ export async function seed(knex: Knex): Promise<void> {
   await knex(DATABASE_TABLES.roles).truncate();
 
   await knex(DATABASE_TABLES.roles).insert([
-    { title: 'OWNER' },
-    { title: 'ADMIN' },
-    { title: 'USER' },
+    { title: 'OWNER', uuid: 'a4a21ed0-e0a0-4fec-a580-1bcab270de05' },
+    { title: 'ADMIN', uuid: '53db78db-3f37-476a-bcb6-d833ddaa9e96' },
+    { title: 'USER', uuid: 'b4c1b534-7c50-4642-b08c-0694e5f7f5c6' },
   ]);
 }

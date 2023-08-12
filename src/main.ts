@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { EnvironmentService } from './config';
+import { EnvironmentService } from './config/environment/environment.service';
 import { HttpExceptionFilter } from './exceptions/http-exception';
 import { ResponseInterceptor } from './interceptors/response-interceptor';
 
