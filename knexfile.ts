@@ -1,8 +1,4 @@
-import * as dotenv from 'dotenv';
-import { join } from 'path';
 import { EnvironmentService } from './src';
-
-dotenv.config();
 
 const { dbHost, dbPort, dbUser, dbPassword, dbName } =
   EnvironmentService.getValues();
@@ -16,11 +12,16 @@ const KnexConfig = {
     password: dbPassword,
     database: dbName,
   },
+  pool: {
+    min: 0,
+    max: 10,
+  },
   migrations: {
-    directory: join(__dirname, 'src', 'database', 'migrations'),
+    directory: './src/database/migrations',
     database: 'mysql',
     extension: 'ts',
   },
+  debug: true,
 };
 
 export default KnexConfig;

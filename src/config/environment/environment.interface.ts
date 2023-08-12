@@ -1,6 +1,6 @@
 export interface IEnvironment {
   appPort: string;
-  dbPort: string;
+  dbPort: number;
   dbUser: string;
   dbPassword: string;
   dbName: string;

@@ -9,8 +9,9 @@ import KnexConfig from '../../knexfile';
   providers: [
     {
       useFactory: () => {
-        // Initialize knex.
+        // Initialize knex
         const knex = Knex(KnexConfig);
+
         // Give Instance of knex to the Objection
         Model.knex(knex);
 
@@ -18,7 +19,7 @@ import KnexConfig from '../../knexfile';
 
         return knex;
       },
-      provide: 'DatabaseService',
+      provide: Symbol.for('KnexConfig'),
     },
   ],
 })

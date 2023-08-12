@@ -26,12 +26,7 @@ export class AppController {
 
   @Get()
   async getHello(@Query() params: FetchQuery): Promise<any> {
-    console.log(
-      '🚀 ~~ file: app.controller.ts:22 ~~ AppController ~~ getHello ~~ params:',
-      params,
-    );
-
-    const user = await this.userRepository.findById(23);
+    const user = await this.userRepository.find({}, params);
 
     // const fakeUser = {
     //   firstName: faker.person.firstName(),

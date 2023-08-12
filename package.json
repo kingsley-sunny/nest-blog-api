@@ -12,6 +12,8 @@
     "mg:down": "knex migrate:down",
     "mg:rollback": "knex migrate:rollback",
     "mg:make": "knex migrate:make",
+    "mg:seed-make": "knex seed:make ",
+    "mg:seed": "knex seed:run",
     "start": "nest start",
     "dev": "nest start --watch",
     "dev:debug": "nest start --debug --watch",

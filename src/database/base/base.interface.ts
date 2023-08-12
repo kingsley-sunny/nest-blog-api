@@ -8,7 +8,7 @@ export interface FetchQuery {
   page?: number;
 }
 
-export interface IBaseInterface {
+export interface IBase {
   id: number;
   uuid: string;
   created_at: string;

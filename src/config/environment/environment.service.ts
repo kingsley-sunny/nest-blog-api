@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import * as dotenv from 'dotenv';
 import { IEnvironment } from './environment.interface';
+
+dotenv.config();
 
 @Injectable()
 export class EnvironmentService {
@@ -12,12 +15,12 @@ export class EnvironmentService {
       dbHost: DB_HOST,
       dbName: DB_NAME,
       dbPassword: DB_PASSWORD,
-      dbPort: DB_PORT,
+      dbPort: DB_PORT as any,
       dbUser: DB_USER,
     };
   }
 
-  public static getValue(value: keyof IEnvironment): string {
+  public static getValue(value: keyof IEnvironment): any {
     return this.getValues()[value];
   }
 }

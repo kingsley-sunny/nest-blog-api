@@ -1,11 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import * as dotenv from 'dotenv';
 import { AppModule } from './app.module';
 import { EnvironmentService } from './config';
 import { HttpExceptionFilter } from './exceptions/http-exception';
 import { ResponseInterceptor } from './interceptors/response-interceptor';
-
-dotenv.config();
 
 class Server {
   static async bootstrap() {

@@ -1,6 +1,6 @@
-import { IBaseInterface } from '../../base/base.interface';
+import { IBase } from '../../base/base.interface';
 
-export interface IUser extends IBaseInterface {
+export interface IUser extends IBase {
   first_name: string;
   last_name: string;
   user_name: string;
