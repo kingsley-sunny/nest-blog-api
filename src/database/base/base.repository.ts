@@ -13,7 +13,7 @@ export abstract class BaseRepository<ModelInterface = any> {
       return createdData;
     });
 
-    return response;
+    return response as any as Required<ModelInterface>;
   }
 
   async find(
@@ -109,7 +109,7 @@ export abstract class BaseRepository<ModelInterface = any> {
       response = await this.model.query().updateAndFetch(data).where(idOrModel);
     }
 
-    return response as any as ModelInterface;
+    return response as any as Required<ModelInterface>;
   }
 
   async delete(id: number) {

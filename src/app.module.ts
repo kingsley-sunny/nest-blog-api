@@ -2,13 +2,19 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BaseModule } from './base/base.module';
-import { EnvironmentModule } from './config/environment/environment.module';
+import { ConfigModule, EnvironmentModule } from './config';
 import { DatabaseModule } from './database/database.module';
-import { UserRepository } from './database/models/user/user.repository';
+import { UserModule } from './modules';
 
 @Module({
-  imports: [BaseModule, EnvironmentModule, DatabaseModule],
+  imports: [
+    BaseModule,
+    ConfigModule,
+    EnvironmentModule,
+    DatabaseModule,
+    UserModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, UserRepository],
+  providers: [AppService],
 })
 export class AppModule {}

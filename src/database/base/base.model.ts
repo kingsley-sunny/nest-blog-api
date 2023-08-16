@@ -1,33 +1,33 @@
-import { Model } from 'objection';
+import { randomUUID } from 'crypto';
+import { Model, StaticHookArguments } from 'objection';
 
 export class BaseModel extends Model {
-  // async $beforeInsert(queryContext: QueryContext): Promise<any> {
-  //   queryContext.transaction.insert({
-  //     uuid: randomUUID(),
-  //     created_at: Date.now(),
-  //     updated_at: Date.now(),
-  //   });
-  // }
-  // async $beforeUpdate(
-  //   opt: ModelOptions,
-  //   queryContext: QueryContext,
-  // ): Promise<any> {
-  //   queryContext.transaction.update({ updated_at: Date.now() });
-  // }
-  // static afterInsert(args: StaticHookArguments<any, any>) {
-  //   const result = args.result[0];
-  //   if (result.password) {
-  //     delete result.password;
-  //   }
-  //   return result;
-  // }
-  // static async afterFind(args: StaticHookArguments<any, any>) {
-  //   const result = args.result.map((data) => {
-  //     if (data.password) {
-  //       delete data.password;
-  //     }
-  //     return data;
-  //   });
-  //   return result;
-  // }
+  static afterInsert(args: StaticHookArguments<any, any>) {
+    const result = args.result[0];
+    if (result.password) {
+      delete result.password;
+    }
+    return result;
+  }
+
+  static beforeInsert(args: StaticHookArguments<any, any>) {
+    const items = args.inputItems.map((item) => ({
+      ...item,
+      uuid: randomUUID(),
+    }));
+
+    console.log(items);
+
+    return items;
+  }
+
+  static async afterFind(args: StaticHookArguments<any, any>) {
+    const result = args.result.map((data) => {
+      if (data.password) {
+        delete data.password;
+      }
+      return data;
+    });
+    return result;
+  }
 }

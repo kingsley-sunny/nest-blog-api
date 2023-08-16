@@ -1,6 +1,7 @@
 import { BaseModel } from '../../base/base.model';
 import { DATABASE_TABLES } from '../../database.tables';
 import { IRole } from './role.interface';
+import { RoleValidation } from './role.valiation';
 
 export class RoleModel extends BaseModel implements IRole {
   public id: IRole['id'];
@@ -12,5 +13,9 @@ export class RoleModel extends BaseModel implements IRole {
 
   static get tableName() {
     return DATABASE_TABLES.roles;
+  }
+
+  static get jsonSchema() {
+    return RoleValidation;
   }
 }

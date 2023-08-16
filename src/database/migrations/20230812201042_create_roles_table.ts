@@ -9,7 +9,7 @@ export async function up(knex: Knex): Promise<void> {
     knex.schema.dropTable(DATABASE_TABLES.roles);
   }
 
-  return await knex.schema.createTableIfNotExists(
+  return await knex.schema.createTable(
     DATABASE_TABLES.roles,
     (tableBuilder) => {
       tableBuilder.increments('id').primary();

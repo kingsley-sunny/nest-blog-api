@@ -4,6 +4,10 @@ import { EnvironmentService } from './config/environment/environment.service';
 import { HttpExceptionFilter } from './exceptions/http-exception';
 import { ResponseInterceptor } from './interceptors/response-interceptor';
 
+import * as env from 'dotenv';
+
+env.config();
+
 class Server {
   static async bootstrap() {
     const app = await NestFactory.create(AppModule, { snapshot: true });

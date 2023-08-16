@@ -1,77 +1,15 @@
-import { faker } from '@faker-js/faker';
-import {
-  Controller,
-  Get,
-  Inject,
-  Param,
-  ParseIntPipe,
-  Query,
-} from '@nestjs/common';
-import { AppService } from './app.service';
-import { BaseService } from './base/base.service';
-import { FetchQuery } from './database/base/base.interface';
-import { User } from './database/models/user/user.model';
-import { UserRepository } from './database/models/user/user.repository';
+import { Controller, Get } from '@nestjs/common';
+import { BaseService } from './base';
 
 // Person model.
 
 @Controller()
 export class AppController {
-  @Inject(BaseService)
-  private baseService: BaseService;
-  @Inject(UserRepository)
-  private userRepository: UserRepository;
-
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  async getHello(@Query() params: FetchQuery): Promise<any> {
-    const user = await this.userRepository.find({}, params);
-
-    // const fakeUser = {
-    //   firstName: faker.person.firstName(),
-    //   lastName: faker.person.lastName(),
-    //   email: faker.internet.email(),
-    //   username: faker.internet.userName(),
-    //   password: faker.internet.password(),
-    // };
-
-    // const { firstName, email, lastName, username, password } = fakeUser;
-
-    // const user = await this.userRepository.create({
-    //   email: email,
-    //   first_name: firstName,
-    //   last_name: lastName,
-    //   user_name: username,
-    //   password: password,
-    // });
-
-    return this.baseService.transformResponse(user, 'Successful');
-  }
-
-  @Get(':id')
-  async getNack(@Param('id', ParseIntPipe) id: number): Promise<any> {
-    for (let i = 0; i < 30; i++) {
-      const user = {
-        firstName: faker.person.firstName(),
-        lastName: faker.person.lastName(),
-        email: faker.internet.email(),
-        username: faker.internet.userName(),
-        password: faker.internet.password(),
-      };
-
-      await User.query().insert({
-        email: user.email,
-        first_name: user.firstName,
-        last_name: user.lastName,
-        user_name: user.username,
-        password: user.password,
-      });
-    }
-
-    return this.baseService.transformResponse(
-      { name: this.appService.getHello() + 'Hi it is working ' + id },
-      'Successful',
+  @Get('/')
+  async find() {
+    return BaseService.transformResponse(
+      { text: 'This is working' },
+      'this is fucking working',
     );
   }
 }

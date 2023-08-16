@@ -3,7 +3,7 @@ import { IResponse } from './base.interface';
 
 @Injectable()
 export class BaseService {
-  public async transformResponse(
+  public static async transformResponse(
     data: Record<any, any> | Promise<Record<any, any>>,
     message: string,
     statusCode: number = HttpStatus.OK,

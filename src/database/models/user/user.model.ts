@@ -1,8 +1,9 @@
 import { BaseModel } from '../../base/base.model';
 import { DATABASE_TABLES } from '../../database.tables';
 import { IUser } from './user.interface';
+import { UserValidation } from './user.validation';
 
-export class User extends BaseModel implements IUser {
+export class UserModel extends BaseModel implements IUser {
   public id: IUser['id'];
   public uuid: IUser['uuid'];
   public created_at: IUser['created_at'];
@@ -15,5 +16,9 @@ export class User extends BaseModel implements IUser {
 
   static get tableName() {
     return DATABASE_TABLES.users;
+  }
+
+  static get jsonSchema() {
+    return UserValidation;
   }
 }

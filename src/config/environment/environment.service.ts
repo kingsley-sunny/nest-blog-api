@@ -24,6 +24,8 @@ export class EnvironmentService {
    * name
    */
   public static getValue(value: keyof EnvironmentInterface) {
-    return this.getValues[value];
+    const values = this.getValues();
+
+    return values[value];
   }
 }
