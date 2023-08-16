@@ -4,8 +4,8 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { FetchQuery } from '../../../database/base/base.interface';
-import { IUser } from '../../../database/models/user/user.interface';
+import { FetchQuery } from '../../database/base/base.interface';
+import { IUser } from '../../database/models/user/user.interface';
 import { CreateUserDto } from './dto/create-user-dto';
 import { UserRepository } from './user.repository';
 
