@@ -16,8 +16,6 @@ export class BaseModel extends Model {
       uuid: randomUUID(),
     }));
 
-    console.log(items);
-
     return items;
   }
 

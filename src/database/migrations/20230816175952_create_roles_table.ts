@@ -12,8 +12,12 @@ export async function up(knex: Knex): Promise<void> {
   return await knex.schema.createTable(
     DATABASE_TABLES.roles,
     (tableBuilder) => {
-      tableBuilder.increments('id').primary();
-      tableBuilder.uuid('uuid').notNullable();
+      tableBuilder.bigIncrements('id').unique().primary().notNullable();
+      tableBuilder
+        .uuid('uuid')
+        .notNullable()
+        .unique()
+        .defaultTo(knex.raw('(UUID())'));
 
       tableBuilder.string('title', 12).notNullable();
 

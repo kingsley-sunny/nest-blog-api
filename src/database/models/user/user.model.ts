@@ -1,5 +1,8 @@
+import { Model, RelationMappings, RelationMappingsThunk } from 'objection';
 import { BaseModel } from '../../base/base.model';
 import { DATABASE_TABLES } from '../../database.tables';
+import { RoleModel } from '../role/role.model';
+import { UserRoleModel } from '../userRole/userRole.model';
 import { IUser } from './user.interface';
 import { UserValidation } from './user.validation';
 
@@ -20,5 +23,30 @@ export class UserModel extends BaseModel implements IUser {
 
   static get jsonSchema() {
     return UserValidation;
+  }
+
+  static get relationMappings(): RelationMappings | RelationMappingsThunk {
+    return {
+      roles: {
+        relation: Model.ManyToManyRelation,
+        modelClass: RoleModel,
+        join: {
+          from: `${DATABASE_TABLES.users}.id`,
+          through: {
+            from: `${DATABASE_TABLES.user_roles}.user_id`,
+            to: `${DATABASE_TABLES.user_roles}.role_id`,
+          },
+          to: `${DATABASE_TABLES.roles}.id`,
+        },
+      },
+      user_roles: {
+        relation: Model.HasManyRelation,
+        modelClass: UserRoleModel,
+        join: {
+          from: `${DATABASE_TABLES.users}.id`,
+          to: `${DATABASE_TABLES.user_roles}.user_id`,
+        },
+      },
+    };
   }
 }

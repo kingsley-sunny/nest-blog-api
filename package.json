@@ -9,6 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "mg:up": "knex migrate:up",
+    "mg:latest": "knex migrate:latest",
     "mg:down": "knex migrate:down",
     "mg:rollback": "knex migrate:rollback",
     "mg:make": "knex migrate:make",

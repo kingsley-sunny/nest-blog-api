@@ -6,9 +6,9 @@ const NO_OF_LIMITED_QUERIES = 10;
 export abstract class BaseRepository<ModelInterface = any> {
   protected constructor(public model: ModelClass<Model>) {}
 
-  async create(data: ModelInterface) {
+  async create(data: ModelInterface & Record<any, any>) {
     const response = await this.model.transaction(async (trx) => {
-      const createdData = await this.model.query(trx).insertAndFetch(data);
+      const createdData = await this.model.query(trx).insertGraphAndFetch(data);
 
       return createdData;
     });
@@ -19,11 +19,13 @@ export abstract class BaseRepository<ModelInterface = any> {
   async find(
     model?: Partial<ModelInterface>,
     params?: FetchQuery,
+    graphFetch?: string,
   ): Promise<Objection.Model[]> {
     const limit = params?.limit ?? NO_OF_LIMITED_QUERIES;
 
     let result = this.model
       .query()
+      .withGraphFetched(graphFetch)
       .where(model ?? {})
       .limit(limit);
 
@@ -53,10 +55,18 @@ export abstract class BaseRepository<ModelInterface = any> {
     return result as any as Objection.Model[];
   }
 
-  async findOne(model: Partial<ModelInterface>, params?: FetchQuery) {
+  async findOne(
+    model: Partial<ModelInterface>,
+    params?: FetchQuery,
+    graphFetch?: string,
+  ) {
     const limit = params?.limit ?? NO_OF_LIMITED_QUERIES;
 
-    let result = this.model.query().findOne(model).limit(limit);
+    let result = this.model
+      .query()
+      .withGraphFetched(graphFetch)
+      .findOne(model)
+      .limit(limit);
 
     if (params?.page) {
       result = result.offset(limit * (params.page - 1 ?? 1));

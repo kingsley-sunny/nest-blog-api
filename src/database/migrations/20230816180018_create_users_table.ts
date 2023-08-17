@@ -12,12 +12,16 @@ export async function up(knex: Knex): Promise<void> {
   return await knex.schema.createTable(
     DATABASE_TABLES.users,
     (tableBuilder) => {
-      tableBuilder.increments('id').primary();
-      tableBuilder.uuid('uuid').notNullable().defaultTo(knex.raw('(UUID())'));
+      tableBuilder.bigIncrements('id').unique().primary().notNullable();
+      tableBuilder
+        .uuid('uuid')
+        .notNullable()
+        .unique()
+        .defaultTo(knex.raw('(UUID())'));
 
       tableBuilder.string('full_name', 129).notNullable();
       tableBuilder.string('user_name', 256).notNullable();
-      tableBuilder.string('email').unique().notNullable();
+      tableBuilder.string('email').notNullable();
       tableBuilder.string('password').notNullable();
 
       tableBuilder.timestamps(true, true);

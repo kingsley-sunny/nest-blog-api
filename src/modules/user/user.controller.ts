@@ -11,7 +11,14 @@ export class UserController {
 
   @Post()
   async create(@Body() data: CreateUserDto) {
-    const user = await this.userService.create(data);
+    const { email, full_name, password, user_roles, user_name } = data;
+    const user = await this.userService.create({
+      email,
+      full_name,
+      password,
+      user_roles,
+      user_name,
+    });
 
     return BaseService.transformResponse(user, 'User Created Successfully');
   }
@@ -20,6 +27,6 @@ export class UserController {
   async find(params: FetchQuery) {
     const users = await this.userService.find(params);
 
-    return BaseService.transformResponse(users, 'User Created Successfully');
+    return BaseService.transformResponse(users, 'Successful');
   }
 }

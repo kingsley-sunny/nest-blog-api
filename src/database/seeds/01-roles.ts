@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 import { DATABASE_TABLES } from '../database.tables';
 
 export async function seed(knex: Knex): Promise<void> {
-  await knex(DATABASE_TABLES.roles).truncate();
+  await knex(DATABASE_TABLES.roles).delete();
 
   await knex(DATABASE_TABLES.roles).insert([
     { title: 'OWNER', uuid: 'a4a21ed0-e0a0-4fec-a580-1bcab270de05' },

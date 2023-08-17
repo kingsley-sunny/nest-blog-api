@@ -5,6 +5,7 @@ import { BaseModule } from './base/base.module';
 import { ConfigModule, EnvironmentModule } from './config';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './modules';
+import { UserRoleModule } from './modules/user-role';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UserModule } from './modules';
     EnvironmentModule,
     DatabaseModule,
     UserModule,
+    UserRoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
