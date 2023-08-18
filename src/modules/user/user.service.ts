@@ -33,10 +33,13 @@ export class UserService {
   }
 
   async find(params: FetchQuery) {
+    console.log(
+      '🚀 ~~ file: user.service.ts:37 ~~ UserService ~~ find ~~ global.authNack:',
+      global.authNack,
+    );
+
     try {
-      const users = await this.userRepository
-        .find({ user_name: 'Nackings' }, params, 'roles')
-        .orWhere({ email: 'sunny@gmails.com' });
+      const users = await this.userRepository.find({}, params, 'roles');
 
       return users;
     } catch (error) {
@@ -65,7 +68,7 @@ export class UserService {
 
   async findUserWithEmailOrUsername(emailOrUsername: string) {
     const user = await this.userRepository
-      .findOne({ email: emailOrUsername })
+      .findOne({ email: emailOrUsername }, {}, 'roles')
       .orWhere({ user_name: emailOrUsername });
 
     return user;

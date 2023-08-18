@@ -15,11 +15,14 @@ export class RolesGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
+    const res = context.switchToHttp().getResponse();
 
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
-    console.log('🚀 ~~ file: roles.guard.ts:20 ~~ RolesGuard ~~ roles:', roles);
 
-    console.log(context.getHandler());
+    console.log(
+      '🚀 ~~ file: roles.guard.ts:19 ~~ RolesGuard ~~ res:',
+      res.locals,
+    );
 
     if (!request.body) {
       throw new InternalServerErrorException('I am nacking right now');

@@ -1,4 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { UserService } from '../user';
 
 @Injectable()
@@ -6,13 +11,19 @@ export class AuthService {
   @Inject(UserService)
   userService: UserService;
 
-  async validateUser(username: string, pass: string): Promise<any> {
+  async validateUser(username: string, password: string): Promise<any> {
     const user = await this.userService.findUserWithEmailOrUsername(username);
 
-    if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
+    if (!user) {
+      throw new ConflictException('User do not exists');
     }
-    return null;
+
+    if (user && user.password !== password) {
+      throw new BadRequestException('Password is incorrect');
+    }
+
+    delete user.password;
+
+    return user;
   }
 }

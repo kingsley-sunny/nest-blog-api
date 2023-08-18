@@ -6,7 +6,6 @@
   "configurations": [
     {
       "type": "node",
-      "request": "attach",
       "name": "Nest Debuugger",
       "skipFiles": ["<node_internals>/**"],
       "port": 9229

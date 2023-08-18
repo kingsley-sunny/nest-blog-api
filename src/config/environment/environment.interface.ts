@@ -5,4 +5,5 @@ export interface EnvironmentInterface {
   dbPassword: string;
   dbHost: string;
   appPort: string;
+  jwtSecretToken: string;
 }

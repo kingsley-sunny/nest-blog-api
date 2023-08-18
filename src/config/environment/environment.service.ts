@@ -7,8 +7,15 @@ env.config();
 @Injectable()
 export class EnvironmentService {
   public static getValues(): EnvironmentInterface {
-    const { APP_PORT, DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT } =
-      process.env;
+    const {
+      APP_PORT,
+      DB_USER,
+      DB_PASSWORD,
+      DB_HOST,
+      DB_NAME,
+      DB_PORT,
+      JWT_SECRET_TOKEN,
+    } = process.env;
 
     return {
       appPort: APP_PORT,
@@ -17,6 +24,7 @@ export class EnvironmentService {
       dbPassword: DB_PASSWORD,
       dbPort: DB_PORT,
       dbUser: DB_USER,
+      jwtSecretToken: JWT_SECRET_TOKEN,
     };
   }
 
