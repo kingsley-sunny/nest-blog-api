@@ -3,7 +3,6 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-  SetMetadata,
 } from '@nestjs/common';
 import { FetchQuery } from '../../database/base/base.interface';
 import { IUser } from '../../database/models/user/user.interface';
@@ -18,13 +17,13 @@ export class UserService {
   async create(data: CreateUserDto) {
     let user: IUser;
     try {
-      const { email, full_name, password, user_name, user_roles } = data;
+      const { email, full_name, password, user_name } = data;
       user = await this.userRepository.create({
         email,
         full_name,
         password,
         user_name,
-        user_roles,
+        user_roles: [{ role_id: 3 }],
       });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
@@ -43,12 +42,8 @@ export class UserService {
     }
   }
 
-  async findOne(id: number, params: FetchQuery) {
-    const user = await this.userRepository.findOne({ id }, params);
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  async findOne(params: Partial<IUser>) {
+    const user = await this.userRepository.findOne(params);
 
     return user;
   }

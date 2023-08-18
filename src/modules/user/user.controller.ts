@@ -12,14 +12,7 @@ export class UserController {
 
   @Post()
   async create(@Body() data: CreateUserDto) {
-    const { email, full_name, password, user_roles, user_name } = data;
-    const user = await this.userService.create({
-      email,
-      full_name,
-      password,
-      user_roles,
-      user_name,
-    });
+    const user = await this.userService.create(data);
 
     return BaseService.transformResponse(user, 'User Created Successfully');
   }

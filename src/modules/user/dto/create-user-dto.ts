@@ -1,4 +1,4 @@
-import { IsArray, IsEmail, IsString, Length } from 'class-validator';
+import { IsEmail, IsString, Length } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -13,6 +13,6 @@ export class CreateUserDto {
   @Length(5)
   password: string;
 
-  @IsArray()
-  user_roles: any[];
+  // @IsArray()
+  // user_roles: any[];
 }

@@ -4,6 +4,7 @@ import { EnvironmentService } from './config/environment/environment.service';
 import { HttpExceptionFilter } from './exceptions/http-exception';
 import { ResponseInterceptor } from './interceptors/response-interceptor';
 
+import { ValidationPipe } from '@nestjs/common';
 import * as env from 'dotenv';
 import { RolesGuard } from './guards/roles.guard';
 
@@ -16,6 +17,7 @@ class Server {
     app.useGlobalInterceptors(new ResponseInterceptor());
     app.useGlobalFilters(new HttpExceptionFilter());
     app.useGlobalGuards(new RolesGuard(new Reflector()));
+    app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
     await app.listen(EnvironmentService.getValue('appPort'));
     console.log('Stared Server on port 8080');

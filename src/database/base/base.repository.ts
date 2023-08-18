@@ -1,4 +1,4 @@
-import Objection, { Model, ModelClass } from 'objection';
+import { Model, ModelClass } from 'objection';
 import { FetchQuery } from './base.interface';
 
 const NO_OF_LIMITED_QUERIES = 10;
@@ -20,7 +20,7 @@ export abstract class BaseRepository<ModelInterface = any> {
     model?: Partial<ModelInterface>,
     params?: FetchQuery,
     graphFetch?: string,
-  ): Promise<Objection.Model[]> {
+  ): Promise<ModelInterface[]> {
     const limit = params?.limit ?? NO_OF_LIMITED_QUERIES;
 
     let result = this.model
@@ -52,7 +52,7 @@ export abstract class BaseRepository<ModelInterface = any> {
       );
     }
 
-    return result as any as Objection.Model[];
+    return result as any as Required<ModelInterface[]>;
   }
 
   async findOne(
@@ -91,7 +91,7 @@ export abstract class BaseRepository<ModelInterface = any> {
       );
     }
 
-    return result as any as Objection.Model[];
+    return result as any as Required<ModelInterface>;
   }
 
   async findById(id: number) {
