@@ -1,4 +1,4 @@
-import { Model, ModelClass } from 'objection';
+import Objection, { Model, ModelClass } from 'objection';
 import { FetchQuery } from './base.interface';
 
 const NO_OF_LIMITED_QUERIES = 10;
@@ -8,7 +8,7 @@ export abstract class BaseRepository<ModelInterface = any> {
 
   async create(data: ModelInterface & Record<any, any>) {
     const response = await this.model.transaction(async (trx) => {
-      const createdData = await this.model.query(trx).insertGraphAndFetch(data);
+      const createdData = this.model.query(trx).insertGraphAndFetch(data);
 
       return createdData;
     });
@@ -16,11 +16,11 @@ export abstract class BaseRepository<ModelInterface = any> {
     return response as any as Required<ModelInterface>;
   }
 
-  async find(
+  find(
     model?: Partial<ModelInterface>,
     params?: FetchQuery,
     graphFetch?: string,
-  ): Promise<ModelInterface[]> {
+  ): Objection.QueryBuilder<Model, ModelInterface[]> {
     const limit = params?.limit ?? NO_OF_LIMITED_QUERIES;
 
     let result = this.model
@@ -52,14 +52,17 @@ export abstract class BaseRepository<ModelInterface = any> {
       );
     }
 
-    return result as any as Required<ModelInterface[]>;
+    return result as any as Objection.QueryBuilder<
+      Model,
+      Required<ModelInterface>[]
+    >;
   }
 
-  async findOne(
+  findOne(
     model: Partial<ModelInterface>,
     params?: FetchQuery,
     graphFetch?: string,
-  ) {
+  ): Objection.QueryBuilder<Model, Required<ModelInterface>> {
     const limit = params?.limit ?? NO_OF_LIMITED_QUERIES;
 
     let result = this.model
@@ -91,7 +94,10 @@ export abstract class BaseRepository<ModelInterface = any> {
       );
     }
 
-    return result as any as Required<ModelInterface>;
+    return result as any as Objection.QueryBuilder<
+      Model,
+      Required<ModelInterface>
+    >;
   }
 
   async findById(id: number) {

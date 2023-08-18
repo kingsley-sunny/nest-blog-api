@@ -34,7 +34,9 @@ export class UserService {
 
   async find(params: FetchQuery) {
     try {
-      const users = await this.userRepository.find({}, params, 'roles');
+      const users = await this.userRepository
+        .find({ user_name: 'Nackings' }, params, 'roles')
+        .orWhere({ email: 'sunny@gmails.com' });
 
       return users;
     } catch (error) {
@@ -59,5 +61,13 @@ export class UserService {
 
   async delete(id: number) {
     return await this.userRepository.delete(id);
+  }
+
+  async findUserWithEmailOrUsername(emailOrUsername: string) {
+    const user = await this.userRepository
+      .findOne({ email: emailOrUsername })
+      .orWhere({ user_name: emailOrUsername });
+
+    return user;
   }
 }

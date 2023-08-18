@@ -19,13 +19,13 @@ export class BaseModel extends Model {
     return items;
   }
 
-  static async afterFind(args: StaticHookArguments<any, any>) {
-    const result = args.result.map((data) => {
-      if (data.password) {
-        delete data.password;
-      }
-      return data;
-    });
-    return result;
-  }
+  // static async afterFind(args: StaticHookArguments<any, any>) {
+  //   const result = args.result.map((data) => {
+  //     if (data.password) {
+  //       delete data.password;
+  //     }
+  //     return data;
+  //   });
+  //   return result;
+  // }
 }
