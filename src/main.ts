@@ -1,4 +1,4 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { EnvironmentService } from './config/environment/environment.service';
 import { HttpExceptionFilter } from './exceptions/http-exception';
@@ -6,7 +6,6 @@ import { ResponseInterceptor } from './interceptors/response-interceptor';
 
 import { ValidationPipe } from '@nestjs/common';
 import * as env from 'dotenv';
-import { RolesGuard } from './guards/roles.guard';
 
 env.config();
 
@@ -16,7 +15,7 @@ class Server {
     app.enableCors();
     app.useGlobalInterceptors(new ResponseInterceptor());
     app.useGlobalFilters(new HttpExceptionFilter());
-    app.useGlobalGuards(new RolesGuard(new Reflector()));
+    // app.useGlobalGuards(new RolesGuard(new Reflector()));
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
     await app.listen(EnvironmentService.getValue('appPort'));

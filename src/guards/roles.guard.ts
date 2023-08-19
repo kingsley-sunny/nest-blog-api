@@ -2,30 +2,46 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  InternalServerErrorException,
+  Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
+import { IRole } from '../database/models/role/role.interface';
+import { UserModel } from '../database/models/user/user.model';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const res = context.switchToHttp().getResponse();
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    Logger.log('CancanActivate', 'RolesGuard');
 
-    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    const req = context.switchToHttp().getRequest();
+    const next = context.switchToHttp().getNext();
 
-    console.log(
-      '🚀 ~~ file: roles.guard.ts:19 ~~ RolesGuard ~~ res:',
-      res.locals,
+    const roles = this.reflector.getAllAndOverride<string[]>('roles', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (!roles || roles.length === 0) {
+      return true;
+    }
+
+    const user: UserModel & { roles?: IRole[] } = await UserModel.query()
+      .findOne({ id: req.user.id })
+      .withGraphFetched('[roles]');
+
+    const userRoles = user.roles;
+
+    const isUserWithThisRole = userRoles.find((role) =>
+      roles.includes(role.title),
     );
 
-    if (!request.body) {
-      throw new InternalServerErrorException('I am nacking right now');
+    if (!isUserWithThisRole) {
+      throw new UnauthorizedException(
+        'You are not permitted to access this resource',
+      );
     }
 
     return true;
