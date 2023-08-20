@@ -39,7 +39,7 @@ export class UserRoleService {
   }
 
   async findOne(id: number, params: FetchQuery) {
-    const userRole = await this.userRoleRepository.findOne({ id }, params);
+    const userRole = await this.userRoleRepository.findOneSync({ id }, params);
 
     if (!userRole) {
       throw new NotFoundException('User Role not found');

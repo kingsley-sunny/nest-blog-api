@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate({ email, uuid }: TokenPayload) {
-    const user: IUser = await this.userRepository.findOne(
+    const user: IUser = await this.userRepository.findOneSync(
       { email, uuid },
       {},
       `[roles]`,

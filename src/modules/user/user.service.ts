@@ -39,7 +39,9 @@ export class UserService {
     );
 
     try {
-      const users = await this.userRepository.find({}, params, 'roles');
+      const users = await this.userRepository
+        .findSync({}, params, 'roles')
+        .where({ user_name: 'Nacking', email: 'sunny@gmails.com' });
 
       return users;
     } catch (error) {
@@ -48,7 +50,7 @@ export class UserService {
   }
 
   async findOne(params: Partial<IUser>) {
-    const user = await this.userRepository.findOne(params);
+    const user = await this.userRepository.findOneSync(params);
 
     return user;
   }
@@ -68,7 +70,7 @@ export class UserService {
 
   async findUserWithEmailOrUsername(emailOrUsername: string) {
     const user = await this.userRepository
-      .findOne({ email: emailOrUsername }, {}, 'roles')
+      .findOneSync({ email: emailOrUsername }, {}, 'roles')
       .orWhere({ user_name: emailOrUsername });
 
     return user;

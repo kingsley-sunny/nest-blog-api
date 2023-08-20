@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { BaseService } from '../../base';
 import { FetchQuery } from '../../database/base/base.interface';
 import { Public } from '../../decorators/public.decorator';
@@ -22,8 +30,23 @@ export class UserRoleController {
   }
 
   @Get()
-  async find(params: FetchQuery) {
+  async find(@Query() params: FetchQuery) {
+    console.log(
+      '🚀 ~~ file: user-role.controller.ts:26 ~~ UserRoleController ~~ find ~~ params:',
+      params,
+    );
+
     const userRoles = await this.userRoleService.find(params);
+
+    return BaseService.transformResponse(
+      userRoles,
+      'User Role Created Successfully',
+    );
+  }
+
+  @Get(':id')
+  async findById(@Param('id') id: number) {
+    const userRoles = await this.userRoleService.findById(id);
 
     return BaseService.transformResponse(
       userRoles,

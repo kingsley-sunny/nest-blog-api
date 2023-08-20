@@ -1,5 +1,5 @@
 import Objection, { Model, ModelClass } from 'objection';
-import { FetchQuery } from './base.interface';
+import { FetchQuery, IPaginatedResponse } from './base.interface';
 
 const NO_OF_LIMITED_QUERIES = 10;
 
@@ -16,7 +16,7 @@ export abstract class BaseRepository<ModelInterface = any> {
     return response as any as Required<ModelInterface>;
   }
 
-  find(
+  findSync(
     model?: Partial<ModelInterface>,
     params?: FetchQuery,
     graphFetch?: string,
@@ -30,7 +30,7 @@ export abstract class BaseRepository<ModelInterface = any> {
       .limit(limit);
 
     if (params?.page) {
-      result = result.offset(limit * (params.page - 1 ?? 1));
+      result = result.offset(limit * (params.page - 1 || 1));
     }
 
     if (params?.startDate) {
@@ -45,6 +45,8 @@ export abstract class BaseRepository<ModelInterface = any> {
       );
     }
 
+    // result
+
     if (params?.search && params?.filterBy !== 'password') {
       result = result.whereILike(
         params?.filterBy ?? 'name',
@@ -58,7 +60,49 @@ export abstract class BaseRepository<ModelInterface = any> {
     >;
   }
 
-  findOne(
+  async find(
+    model?: Partial<ModelInterface>,
+    params?: FetchQuery,
+    graphFetch?: string,
+  ): Promise<
+    IPaginatedResponse<Objection.QueryBuilder<Model, ModelInterface[]>>
+  > {
+    const result = await this.findSync(model, params, graphFetch);
+
+    const total = await this.model.query().resultSize();
+
+    return this.paginateData(
+      total,
+      result,
+      Number(params.limit),
+      Number(params.page),
+    );
+  }
+
+  paginateData(
+    total: number,
+    data: Record<any, any>[],
+    limit: number = NO_OF_LIMITED_QUERIES,
+    currentPage = 1,
+  ): IPaginatedResponse {
+    const pageCount = Math.ceil(total / limit);
+    const nextPage = currentPage >= pageCount ? 0 : currentPage + 1;
+    const previousPage = currentPage === 1 ? 0 : currentPage - 1;
+
+    return {
+      [this.model.tableName]: data,
+      pagination: {
+        current_page: currentPage,
+        next_page: nextPage,
+        previous_page: previousPage,
+        limit: limit,
+        page_count: pageCount,
+        total,
+      },
+    };
+  }
+
+  findOneSync(
     model: Partial<ModelInterface>,
     params?: FetchQuery,
     graphFetch?: string,
