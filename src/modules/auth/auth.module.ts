@@ -9,6 +9,11 @@ import { LoginController, LoginModule, LoginService } from './login';
 import { SignUpController, SignUpModule, SignUpService } from './signup';
 import { JwtStrategy } from './strategies/jwt.strategy.service';
 import { LocalStrategy } from './strategies/local.strategy';
+import {
+  VerificationController,
+  VerificationRepository,
+  VerificationService,
+} from './veritfication';
 
 @Module({
   imports: [
@@ -29,7 +34,9 @@ import { LocalStrategy } from './strategies/local.strategy';
     SignUpService,
     JwtStrategy,
     UserRepository,
+    VerificationService,
+    VerificationRepository,
   ],
-  controllers: [LoginController, SignUpController],
+  controllers: [LoginController, SignUpController, VerificationController],
 })
 export class AuthModule {}

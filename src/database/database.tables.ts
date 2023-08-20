@@ -9,4 +9,5 @@ export const DATABASE_TABLES = {
   reply_likes: 'reply_likes',
   roles: 'roles',
   user_roles: 'user_roles',
+  verification_codes: 'verification_codes',
 };
