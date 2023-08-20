@@ -15,6 +15,7 @@ export class EnvironmentService {
       DB_NAME,
       DB_PORT,
       JWT_SECRET_TOKEN,
+      RESEND_API_KEY,
     } = process.env;
 
     return {
@@ -25,6 +26,7 @@ export class EnvironmentService {
       dbPort: DB_PORT,
       dbUser: DB_USER,
       jwtSecretToken: JWT_SECRET_TOKEN,
+      resendApiKey: RESEND_API_KEY,
     };
   }
 

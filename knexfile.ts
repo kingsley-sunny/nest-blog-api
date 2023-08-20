@@ -1,6 +1,6 @@
 import { EnvironmentService } from './src/config/environment/environment.service';
 
-const { appPort, dbHost, dbName, dbPassword, dbPort, dbUser } =
+const { dbHost, dbName, dbPassword, dbPort, dbUser } =
   EnvironmentService.getValues();
 
 const KnexConfig = {

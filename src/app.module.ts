@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
+import { AdapterModule } from './adapters/adapter.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BaseModule } from './base/base.module';
@@ -22,6 +23,7 @@ import { UtilsModule } from './utils/utils.module';
     UserRoleModule,
     AuthModule,
     UtilsModule,
+    AdapterModule,
   ],
   controllers: [AppController],
   providers: [

@@ -6,4 +6,5 @@ export interface EnvironmentInterface {
   dbHost: string;
   appPort: string;
   jwtSecretToken: string;
+  resendApiKey: string;
 }
