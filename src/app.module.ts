@@ -10,6 +10,7 @@ import { RolesGuard } from './guards/roles.guard';
 import { UserModule } from './modules';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserRoleModule } from './modules/user-role';
+import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UserRoleModule } from './modules/user-role';
     UserModule,
     UserRoleModule,
     AuthModule,
+    UtilsModule,
   ],
   controllers: [AppController],
   providers: [

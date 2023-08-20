@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { FetchQuery } from '../../database/base/base.interface';
 import { IUser } from '../../database/models/user/user.interface';
+import { UtilsService } from '../../utils/utils.service';
 import { CreateUserDto } from './dto/create-user-dto';
 import { UserRepository } from './user.repository';
 
@@ -18,10 +19,13 @@ export class UserService {
     let user: IUser;
     try {
       const { email, full_name, password, user_name } = data;
+
+      const hashedPassword = await UtilsService.hashPassword(password);
+
       user = await this.userRepository.create({
         email,
         full_name,
-        password,
+        password: hashedPassword,
         user_name,
         user_roles: [{ role_id: 3 }],
       });
@@ -33,15 +37,8 @@ export class UserService {
   }
 
   async find(params: FetchQuery) {
-    console.log(
-      '🚀 ~~ file: user.service.ts:37 ~~ UserService ~~ find ~~ global.authNack:',
-      global.authNack,
-    );
-
     try {
-      const users = await this.userRepository
-        .findSync({}, params, 'roles')
-        .where({ user_name: 'Nacking', email: 'sunny@gmails.com' });
+      const users = await this.userRepository.find({}, params, 'roles');
 
       return users;
     } catch (error) {
@@ -50,7 +47,7 @@ export class UserService {
   }
 
   async findOne(params: Partial<IUser>) {
-    const user = await this.userRepository.findOneSync(params);
+    const user = await this.userRepository.findOne(params);
 
     return user;
   }
@@ -70,7 +67,7 @@ export class UserService {
 
   async findUserWithEmailOrUsername(emailOrUsername: string) {
     const user = await this.userRepository
-      .findOneSync({ email: emailOrUsername }, {}, 'roles')
+      .findOne({ email: emailOrUsername }, {}, 'roles')
       .orWhere({ user_name: emailOrUsername });
 
     return user;

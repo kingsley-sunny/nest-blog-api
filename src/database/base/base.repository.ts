@@ -82,9 +82,17 @@ export abstract class BaseRepository<ModelInterface = any> {
   paginateData(
     total: number,
     data: Record<any, any>[],
-    limit: number = NO_OF_LIMITED_QUERIES,
+    limit: number,
     currentPage = 1,
   ): IPaginatedResponse {
+    if (!limit) {
+      limit = NO_OF_LIMITED_QUERIES;
+    }
+
+    if (!currentPage) {
+      currentPage = 1;
+    }
+
     const pageCount = Math.ceil(total / limit);
     const nextPage = currentPage >= pageCount ? 0 : currentPage + 1;
     const previousPage = currentPage === 1 ? 0 : currentPage - 1;
@@ -102,7 +110,7 @@ export abstract class BaseRepository<ModelInterface = any> {
     };
   }
 
-  findOneSync(
+  findOne(
     model: Partial<ModelInterface>,
     params?: FetchQuery,
     graphFetch?: string,
@@ -116,7 +124,7 @@ export abstract class BaseRepository<ModelInterface = any> {
       .limit(limit);
 
     if (params?.page) {
-      result = result.offset(limit * (params.page - 1 ?? 1));
+      result = result.offset(limit * (params.page - 1 || 1));
     }
 
     if (params?.startDate) {
@@ -169,7 +177,7 @@ export abstract class BaseRepository<ModelInterface = any> {
       response = await this.model.query().updateAndFetch(data).where(idOrModel);
     }
 
-    return response as any as Required<ModelInterface>;
+    return response as Required<ModelInterface>;
   }
 
   async delete(id: number) {

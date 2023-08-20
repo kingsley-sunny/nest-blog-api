@@ -1,4 +1,9 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { IUser } from '../../../database/models/user/user.interface';
@@ -16,7 +21,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate({ email, uuid }: TokenPayload) {
-    const user: IUser = await this.userRepository.findOneSync(
+    Logger.log('Validate', 'JwtStrategy');
+
+    const user: IUser = await this.userRepository.findOne(
       { email, uuid },
       {},
       `[roles]`,

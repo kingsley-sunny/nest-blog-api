@@ -17,7 +17,6 @@ export class RolesGuard implements CanActivate {
     Logger.log('CancanActivate', 'RolesGuard');
 
     const req = context.switchToHttp().getRequest();
-    const next = context.switchToHttp().getNext();
 
     const roles = this.reflector.getAllAndOverride<string[]>('roles', [
       context.getHandler(),

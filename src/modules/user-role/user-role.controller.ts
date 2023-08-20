@@ -8,12 +8,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { BaseService } from '../../base';
+import { ROLES } from '../../base/base.constant';
 import { FetchQuery } from '../../database/base/base.interface';
-import { Public } from '../../decorators/public.decorator';
+import { Roles } from '../../decorators/roles.decorator';
 import { CreateUserRoleDto } from './dto/create-user-role.dto';
 import { UserRoleService } from './user-role.service';
 
-@Public()
+@Roles(ROLES.OWNER, ROLES.ADMIN)
 @Controller('/user-roles')
 export class UserRoleController {
   @Inject(UserRoleService)
@@ -31,11 +32,6 @@ export class UserRoleController {
 
   @Get()
   async find(@Query() params: FetchQuery) {
-    console.log(
-      '🚀 ~~ file: user-role.controller.ts:26 ~~ UserRoleController ~~ find ~~ params:',
-      params,
-    );
-
     const userRoles = await this.userRoleService.find(params);
 
     return BaseService.transformResponse(

@@ -20,8 +20,8 @@ export async function up(knex: Knex): Promise<void> {
         .defaultTo(knex.raw('(UUID())'));
 
       tableBuilder.string('full_name', 129).notNullable();
-      tableBuilder.string('user_name', 256).notNullable();
-      tableBuilder.string('email').notNullable();
+      tableBuilder.string('user_name', 256).notNullable().unique();
+      tableBuilder.string('email').notNullable().unique();
       tableBuilder.string('password').notNullable();
 
       tableBuilder.timestamps(true, true);

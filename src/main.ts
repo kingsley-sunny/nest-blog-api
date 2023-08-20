@@ -15,7 +15,6 @@ class Server {
     app.enableCors();
     app.useGlobalInterceptors(new ResponseInterceptor());
     app.useGlobalFilters(new HttpExceptionFilter());
-    // app.useGlobalGuards(new RolesGuard(new Reflector()));
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
     await app.listen(EnvironmentService.getValue('appPort'));

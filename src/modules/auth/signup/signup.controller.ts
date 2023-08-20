@@ -1,8 +1,10 @@
 import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { BaseService } from '../../../base';
+import { Public } from '../../../decorators/public.decorator';
 import { CreateUserDto } from '../../user/dto/create-user-dto';
 import { SignUpService } from './signup.service';
 
+@Public()
 @Controller('auth/signup')
 export class SignUpController {
   @Inject(SignUpService)

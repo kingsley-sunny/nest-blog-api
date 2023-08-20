@@ -5,6 +5,7 @@ import { RoleModel } from '../role/role.model';
 import { UserRoleModel } from '../userRole/userRole.model';
 import { IUser } from './user.interface';
 import { UserValidation } from './user.validation';
+import { UserPasswordOption } from './userPasswordOption';
 
 export class UserModel extends BaseModel implements IUser {
   public id: IUser['id'];
@@ -48,5 +49,18 @@ export class UserModel extends BaseModel implements IUser {
         },
       },
     };
+  }
+
+  $formatJson(json) {
+    const isPasswordHidden = UserPasswordOption.getStatus();
+
+    if (isPasswordHidden) {
+      json = super.$formatJson(json);
+      delete json.password;
+
+      UserPasswordOption.hidePassword();
+    }
+
+    return json;
   }
 }

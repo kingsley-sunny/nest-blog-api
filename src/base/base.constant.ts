@@ -3,3 +3,5 @@ export const ROLES = {
   USER: 'USER',
   OWNER: 'OWNER',
 };
+
+export const SALTS_ROUNDS = 12;
