@@ -1,25 +1,7 @@
-import { Global, Injectable, Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import Knex from 'knex';
 import { Model } from 'objection';
-
-// Initialize knex.
-const knex = Knex({
-  client: 'mysql2',
-  useNullAsDefault: true,
-  connection: {
-    filename: 'example.db',
-    database: 'mysql',
-    userName: 'root',
-    password: 'bosslikeme',
-  },
-});
-
-@Injectable()
-export class DatabaseService extends Model {
-  constructor() {
-    super();
-  }
-}
+import KnexConfig from '../../knexfile';
 
 @Global()
 @Module({
@@ -27,17 +9,17 @@ export class DatabaseService extends Model {
   providers: [
     {
       useFactory: () => {
-        return Model.knex(knex);
+        // Initialize knex
+        const knex = Knex(KnexConfig);
+
+        // Give Instance of knex to the Objection
+        Model.knex(knex);
+
+        console.log('Successfully Created connection with the database');
+
+        return knex;
       },
-      provide: 'DatabaseService',
-    },
-  ],
-  exports: [
-    {
-      useFactory: () => {
-        return Model.knex(knex);
-      },
-      provide: 'DatabaseService',
+      provide: Symbol.for('KnexConfig'),
     },
   ],
 })

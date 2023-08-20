@@ -1,0 +1,32 @@
+import { Injectable, Logger } from '@nestjs/common';
+import { Resend } from 'resend';
+import { EnvironmentService } from '../../../../config';
+
+@Injectable()
+export class ResendAdapter {
+  private resend = new Resend(EnvironmentService.getValue('resendApiKey'));
+
+  public static isActive = true;
+
+  async sendMail(
+    to: string,
+    subject: string,
+    message: string,
+    config?: any,
+  ): Promise<boolean> {
+    Logger.log('sendMail', 'ResendAdapter');
+
+    const sentMail = await this.resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to,
+      subject,
+      html: message,
+    });
+
+    if (!sentMail.id) {
+      return false;
+    }
+
+    return true;
+  }
+}

@@ -17,7 +17,6 @@ export class ResponseInterceptor implements NestInterceptor {
         data.path = path;
         data.resource = resource;
 
-        console.log(data);
         return data;
       }),
     );

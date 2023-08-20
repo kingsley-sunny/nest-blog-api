@@ -1,1 +1,2 @@
-export const n = 'hello';
+export * from './config.module';
+export * from './environment';
