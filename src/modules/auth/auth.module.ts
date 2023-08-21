@@ -6,6 +6,13 @@ import { EnvironmentService } from '../../config';
 import { UserModule, UserRepository } from '../user';
 import { AuthService } from './auth.service';
 import { LoginController, LoginModule, LoginService } from './login';
+
+import {
+  ResetPasswordController,
+  ResetPasswordModule,
+  ResetPasswordRepository,
+  ResetPasswordService,
+} from './reset-password';
 import { SignUpController, SignUpModule, SignUpService } from './signup';
 import { JwtStrategy } from './strategies/jwt.strategy.service';
 import { LocalStrategy } from './strategies/local.strategy';
@@ -36,7 +43,15 @@ import {
     UserRepository,
     VerificationService,
     VerificationRepository,
+    ResetPasswordModule,
+    ResetPasswordService,
+    ResetPasswordRepository,
   ],
-  controllers: [LoginController, SignUpController, VerificationController],
+  controllers: [
+    LoginController,
+    SignUpController,
+    VerificationController,
+    ResetPasswordController,
+  ],
 })
 export class AuthModule {}

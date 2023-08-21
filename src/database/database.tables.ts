@@ -10,4 +10,5 @@ export const DATABASE_TABLES = {
   roles: 'roles',
   user_roles: 'user_roles',
   verification_codes: 'verification_codes',
+  reset_password_codes: 'reset_password_codes',
 };
