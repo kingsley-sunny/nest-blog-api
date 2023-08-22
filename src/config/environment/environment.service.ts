@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as env from 'dotenv';
 import { EnvironmentInterface } from './environment.interface';
 
@@ -7,6 +7,8 @@ env.config();
 @Injectable()
 export class EnvironmentService {
   public static getValues(): EnvironmentInterface {
+    Logger.log('getValues', 'EnvironmentService');
+
     const {
       APP_PORT,
       DB_USER,
@@ -34,6 +36,8 @@ export class EnvironmentService {
    * name
    */
   public static getValue(value: keyof EnvironmentInterface) {
+    Logger.log('getValue', 'EnvironmentService');
+
     const values = this.getValues();
 
     return values[value];

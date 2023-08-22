@@ -3,6 +3,7 @@ import {
   ConflictException,
   Inject,
   Injectable,
+  Logger,
 } from '@nestjs/common';
 import { UserPasswordOption } from '../../database/models/user/userPasswordOption';
 import { UtilsService } from '../../utils/utils.service';
@@ -14,6 +15,8 @@ export class AuthService {
   userService: UserService;
 
   async validateUser(username: string, password: string): Promise<any> {
+    Logger.log('validateUser', 'AuthService');
+
     UserPasswordOption.showPassword();
     const user = await this.userService.findUserWithEmailOrUsername(username);
 

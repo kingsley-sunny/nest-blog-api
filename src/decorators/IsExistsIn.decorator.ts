@@ -1,4 +1,4 @@
-import { InternalServerErrorException } from '@nestjs/common';
+import { InternalServerErrorException, Logger } from '@nestjs/common';
 import {
   ValidationArguments,
   ValidationOptions,
@@ -33,6 +33,8 @@ async function validate(
   propertyName: string,
   options: ValidationOptions,
 ) {
+  Logger.log('validate', 'IsExistsIn.Decorator');
+
   const [column, model] = args.constraints;
 
   const data = await model.findOne({ [column]: value });

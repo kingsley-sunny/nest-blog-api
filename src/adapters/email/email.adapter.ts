@@ -38,6 +38,7 @@ export class EmailAdapter<T = any> implements EmailManagement {
 
       return true;
     } catch (error) {
+      Logger.error(error.message, 'EmailAdapter');
       throw new InternalServerErrorException(error.message);
     }
   }

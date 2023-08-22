@@ -24,6 +24,7 @@ export class ResendAdapter {
     });
 
     if (!sentMail.id) {
+      Logger.error(sentMail, 'ResendAdapter');
       return false;
     }
 

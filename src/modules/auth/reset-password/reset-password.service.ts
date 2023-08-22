@@ -27,6 +27,8 @@ export class ResetPasswordService {
   userRepository: UserRepository;
 
   async create(data: CreateResetPasswordDto) {
+    Logger.log('create', 'ResetPasswordService');
+
     const { email } = data;
     const uniqueId = randomUUID();
 
@@ -49,6 +51,8 @@ export class ResetPasswordService {
         });
       }
     } catch (error) {
+      Logger.log(error.message, 'ResetPasswordService');
+
       throw new InternalServerErrorException(error.message);
     }
 
@@ -56,6 +60,8 @@ export class ResetPasswordService {
   }
 
   async createNewPassword(data: CreateNewPasswordDto) {
+    Logger.log('createNewPassword', 'ResetPasswordService');
+
     const { password, unique_id } = data;
     const currentTime = new Date();
 
@@ -92,6 +98,8 @@ export class ResetPasswordService {
   }
 
   async find(params: FetchQuery) {
+    Logger.log('find', 'ResetPasswordService');
+
     try {
       const resetPasswords = await this.resetPasswordRepository.find(
         {},
@@ -100,17 +108,23 @@ export class ResetPasswordService {
 
       return resetPasswords;
     } catch (error) {
+      Logger.error(error.message, 'ResetPasswordService');
+
       throw new InternalServerErrorException(error.message);
     }
   }
 
   async findOne(params: Partial<IResetPasswordCode>) {
+    Logger.log('findOne', 'ResetPasswordService');
+
     const resetPassword = await this.resetPasswordRepository.findOne(params);
 
     return resetPassword;
   }
 
   async findById(id: number) {
+    Logger.log('findById', 'ResetPasswordService');
+
     const resetPassword = await this.resetPasswordRepository.findById(id);
     if (!resetPassword) {
       throw new NotFoundException('ResetPassword not found');
@@ -120,6 +134,8 @@ export class ResetPasswordService {
   }
 
   async delete(id: number) {
+    Logger.log('delete', 'ResetPasswordService');
+
     return await this.resetPasswordRepository.delete(id);
   }
 }

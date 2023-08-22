@@ -32,6 +32,8 @@ export class SignUpService {
 
       return user;
     } catch (error) {
+      Logger.error(error.message, 'SignupService');
+
       throw new InternalServerErrorException(error.message);
     }
   }

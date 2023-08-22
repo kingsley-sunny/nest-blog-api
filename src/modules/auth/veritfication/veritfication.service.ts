@@ -2,6 +2,7 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { TWO_HOURS_IN_MILLISECONDS } from '../../../base/base.constant';
@@ -18,6 +19,8 @@ export class VerificationService {
 
   @Public()
   async create(data: CreateVerificationDto, userId: number) {
+    Logger.log('create', 'VerificationService');
+
     const { email } = data;
     let verification: IVerificationCode;
     try {
@@ -30,6 +33,8 @@ export class VerificationService {
         expires_at: Date.now() + TWO_HOURS_IN_MILLISECONDS,
       });
     } catch (error) {
+      Logger.error(error.message, 'VerificationService');
+
       throw new InternalServerErrorException(error.message);
     }
 
@@ -37,22 +42,30 @@ export class VerificationService {
   }
 
   async find(params: FetchQuery) {
+    Logger.log('find', 'VerificationService');
+
     try {
       const verifications = await this.verificationRepository.find({}, params);
 
       return verifications;
     } catch (error) {
+      Logger.log(error.message, 'VerificationService');
+
       throw new InternalServerErrorException(error.message);
     }
   }
 
   async findOne(params: Partial<IVerificationCode>) {
+    Logger.log('findOne', 'VerificationService');
+
     const verification = await this.verificationRepository.findOne(params);
 
     return verification;
   }
 
   async findById(id: number) {
+    Logger.log('findById', 'VerificationService');
+
     const verification = await this.verificationRepository.findById(id);
     if (!verification) {
       throw new NotFoundException('Verification not found');
@@ -62,6 +75,8 @@ export class VerificationService {
   }
 
   async delete(id: number) {
+    Logger.log('delete', 'VerificationService');
+
     return await this.verificationRepository.delete(id);
   }
 }
