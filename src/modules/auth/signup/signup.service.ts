@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { IUser } from '../../../database/models/user/user.interface';
 import { UserService } from '../../user';
-import { CreateUserDto } from '../../user/dto/create-user-dto';
+import { CreateUserDto } from '../../user/dto/create-user.dto';
 
 @Injectable()
 export class SignUpService {

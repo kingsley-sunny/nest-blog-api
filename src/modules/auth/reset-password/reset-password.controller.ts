@@ -7,8 +7,10 @@ import { Roles } from '../../../decorators/roles.decorator';
 import { CreateNewPasswordDto } from './dto/create-new-password.dto';
 import { CreateResetPasswordDto } from './dto/create-reset-password.dto';
 import { ResetPasswordService } from './reset-password.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('/auth/forgot-password')
+@ApiTags('auth')
 export class ResetPasswordController {
   @Inject(ResetPasswordService)
   private resetPasswordService: ResetPasswordService;
