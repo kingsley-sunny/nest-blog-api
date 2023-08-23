@@ -10,6 +10,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 import { UserModule } from './modules';
 import { AuthModule } from './modules/auth/auth.module';
+import { CategoryModule } from './modules/category';
 import { UserRoleModule } from './modules/user-role';
 import { UtilsModule } from './utils/utils.module';
 
@@ -24,6 +25,7 @@ import { UtilsModule } from './utils/utils.module';
     AuthModule,
     UtilsModule,
     AdapterModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { BaseService } from '../../base';
 import { BaseApiResponse } from '../../base/base-api-response';
@@ -32,7 +40,7 @@ export class UserController {
   }
 
   @Get()
-  async find(@Param() params: FetchQuery) {
+  async find(@Query() params: FetchQuery) {
     const users = await this.userService.find(params);
 
     return BaseService.transformResponse(users, 'Successful');

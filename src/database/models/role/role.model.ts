@@ -1,7 +1,7 @@
 import { BaseModel } from '../../base/base.model';
 import { DATABASE_TABLES } from '../../database.tables';
 import { IRole } from './role.interface';
-import { RoleValidation } from './role.valiation';
+import { RoleValidation } from './role.validation';
 
 export class RoleModel extends BaseModel implements IRole {
   public id: IRole['id'];
