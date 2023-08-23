@@ -1,4 +1,4 @@
-import { ApiResponseProperty } from '@nestjs/swagger';
+import { ApiHideProperty } from '@nestjs/swagger';
 import { Model, RelationMappings, RelationMappingsThunk } from 'objection';
 import { BaseModel } from '../../base/base.model';
 import { DATABASE_TABLES } from '../../database.tables';
@@ -8,14 +8,6 @@ import { IUser } from './user.interface';
 import { UserValidation } from './user.validation';
 import { UserPasswordOption } from './userPasswordOption';
 
-function GetUser(one) {
-  console.log(
-    '🚀 ~~ file: user.model.ts:13 ~~ GetUser ~~ one, two, three, four:',
-    Object.keys(one),
-  );
-}
-
-@GetUser
 export class UserModel extends BaseModel implements IUser {
   public id: IUser['id'];
   public uuid: IUser['uuid'];
@@ -25,6 +17,8 @@ export class UserModel extends BaseModel implements IUser {
   public full_name: IUser['full_name'];
   public user_name: IUser['user_name'];
   public email: IUser['email'];
+
+  @ApiHideProperty()
   public password: IUser['password'];
 
   static get tableName() {

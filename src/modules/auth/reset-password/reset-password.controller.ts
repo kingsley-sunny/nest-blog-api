@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { BaseService } from '../../../base';
 import { ROLES } from '../../../base/base.constant';
 import { FetchQuery } from '../../../database/base/base.interface';
@@ -7,7 +8,6 @@ import { Roles } from '../../../decorators/roles.decorator';
 import { CreateNewPasswordDto } from './dto/create-new-password.dto';
 import { CreateResetPasswordDto } from './dto/create-reset-password.dto';
 import { ResetPasswordService } from './reset-password.service';
-import { ApiTags } from '@nestjs/swagger';
 
 @Controller('/auth/forgot-password')
 @ApiTags('auth')
