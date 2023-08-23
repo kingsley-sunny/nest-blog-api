@@ -7,6 +7,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { BaseService } from '../../base';
 import { ROLES } from '../../base/base.constant';
 import { FetchQuery } from '../../database/base/base.interface';
@@ -16,6 +17,7 @@ import { UserRoleService } from './user-role.service';
 
 @Roles(ROLES.OWNER, ROLES.ADMIN)
 @Controller('/user-roles')
+@ApiTags('user-roles')
 export class UserRoleController {
   @Inject(UserRoleService)
   private userRoleService: UserRoleService;

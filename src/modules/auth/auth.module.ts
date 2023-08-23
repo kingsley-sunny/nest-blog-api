@@ -6,9 +6,21 @@ import { EnvironmentService } from '../../config';
 import { UserModule, UserRepository } from '../user';
 import { AuthService } from './auth.service';
 import { LoginController, LoginModule, LoginService } from './login';
+
+import {
+  ResetPasswordController,
+  ResetPasswordModule,
+  ResetPasswordRepository,
+  ResetPasswordService,
+} from './reset-password';
 import { SignUpController, SignUpModule, SignUpService } from './signup';
 import { JwtStrategy } from './strategies/jwt.strategy.service';
 import { LocalStrategy } from './strategies/local.strategy';
+import {
+  VerificationController,
+  VerificationRepository,
+  VerificationService,
+} from './veritfication';
 
 @Module({
   imports: [
@@ -29,7 +41,17 @@ import { LocalStrategy } from './strategies/local.strategy';
     SignUpService,
     JwtStrategy,
     UserRepository,
+    VerificationService,
+    VerificationRepository,
+    ResetPasswordModule,
+    ResetPasswordService,
+    ResetPasswordRepository,
   ],
-  controllers: [LoginController, SignUpController],
+  controllers: [
+    LoginController,
+    SignUpController,
+    VerificationController,
+    ResetPasswordController,
+  ],
 })
 export class AuthModule {}

@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import Objection, { Model, ModelClass } from 'objection';
 import { FetchQuery, IPaginatedResponse } from './base.interface';
 
@@ -6,7 +7,9 @@ const NO_OF_LIMITED_QUERIES = 10;
 export abstract class BaseRepository<ModelInterface = any> {
   protected constructor(public model: ModelClass<Model>) {}
 
-  async create(data: ModelInterface & Record<any, any>) {
+  async create<T extends Record<any, any>>(data: ModelInterface & T) {
+    Logger.log('create', 'BaseRepository');
+
     const response = await this.model.transaction(async (trx) => {
       const createdData = this.model.query(trx).insertGraphAndFetch(data);
 
@@ -21,6 +24,8 @@ export abstract class BaseRepository<ModelInterface = any> {
     params?: FetchQuery,
     graphFetch?: string,
   ): Objection.QueryBuilder<Model, ModelInterface[]> {
+    Logger.log('findSync', 'BaseRepository');
+
     const limit = params?.limit ?? NO_OF_LIMITED_QUERIES;
 
     let result = this.model
@@ -67,6 +72,8 @@ export abstract class BaseRepository<ModelInterface = any> {
   ): Promise<
     IPaginatedResponse<Objection.QueryBuilder<Model, ModelInterface[]>>
   > {
+    Logger.log('find', 'BaseRepository');
+
     const result = await this.findSync(model, params, graphFetch);
 
     const total = await this.model.query().resultSize();
@@ -85,6 +92,8 @@ export abstract class BaseRepository<ModelInterface = any> {
     limit: number,
     currentPage = 1,
   ): IPaginatedResponse {
+    Logger.log('paginateData', 'BaseRepository');
+
     if (!limit) {
       limit = NO_OF_LIMITED_QUERIES;
     }
@@ -115,6 +124,8 @@ export abstract class BaseRepository<ModelInterface = any> {
     params?: FetchQuery,
     graphFetch?: string,
   ): Objection.QueryBuilder<Model, Required<ModelInterface>> {
+    Logger.log('findOne', 'BaseRepository');
+
     const limit = params?.limit ?? NO_OF_LIMITED_QUERIES;
 
     let result = this.model
@@ -153,6 +164,8 @@ export abstract class BaseRepository<ModelInterface = any> {
   }
 
   async findById(id: number) {
+    Logger.log('findById', 'BaseRepository');
+
     const data = await this.model.query().findById(id);
 
     return data;
@@ -161,26 +174,30 @@ export abstract class BaseRepository<ModelInterface = any> {
   async update(
     data: Partial<ModelInterface>,
     data2: Partial<ModelInterface>,
-  ): Promise<ModelInterface>;
+  ): Promise<Required<ModelInterface>>;
   async update(
     id: number,
     data2: Partial<ModelInterface>,
-  ): Promise<ModelInterface>;
+  ): Promise<Required<ModelInterface>>;
   async update(
     idOrModel: number | Partial<ModelInterface>,
     data: Partial<ModelInterface>,
-  ): Promise<ModelInterface> {
+  ): Promise<Required<ModelInterface>> {
+    Logger.log('update', 'BaseRepository');
+
     let response: any;
     if (typeof idOrModel === 'number') {
-      response = await this.model.query().updateAndFetchById(idOrModel, data);
+      response = await this.model.query().patchAndFetchById(idOrModel, data);
     } else {
-      response = await this.model.query().updateAndFetch(data).where(idOrModel);
+      response = await this.model.query().where(idOrModel).patch(data);
     }
 
     return response as Required<ModelInterface>;
   }
 
   async delete(id: number) {
+    Logger.log('delete', 'BaseRepository');
+
     const response = await this.model.query().delete().where({ id: id });
 
     return response;

@@ -7,8 +7,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { EmailAdapter } from '../../../adapters/email/email.adapter';
 import { BaseService } from '../../../base';
+import { UserModel } from '../../../database/models/user/user.model';
 import { Public } from '../../../decorators/public.decorator';
 import { LoginDto } from './dto';
 import { LoginService } from './login.service';
@@ -16,6 +18,7 @@ import { LoginService } from './login.service';
 @Public()
 @UseGuards(AuthGuard('local'))
 @Controller('auth/login')
+@ApiTags('auth')
 export class LoginController {
   @Inject(LoginService)
   loginService: LoginService;
@@ -23,6 +26,7 @@ export class LoginController {
   emailAdapter: EmailAdapter;
 
   @Post()
+  @ApiCreatedResponse({ type: UserModel })
   async create(@Body() data: LoginDto, @Request() req: Request) {
     const user = await this.loginService.create((req as any).user);
 

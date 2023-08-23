@@ -32,12 +32,13 @@ export class EmailAdapter<T = any> implements EmailManagement {
 
       if (!isEmailSent) {
         throw new InternalServerErrorException(
-          'Something Went Wrong with the email',
+          'Something Went Wrong with sending email',
         );
       }
 
       return true;
     } catch (error) {
+      Logger.error(error.message, 'EmailAdapter');
       throw new InternalServerErrorException(error.message);
     }
   }

@@ -1,7 +1,15 @@
-import { IsString, Length } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, Length } from 'class-validator';
+import { UserModel } from '../../../../database/models/user/user.model';
 
 export class LoginDto {
-  @IsString()
+  @IsEmail()
+  @ApiProperty({
+    type: () => UserModel,
+    isArray: true,
+    name: 'email',
+    example: new UserModel(),
+  })
   email: string;
 
   @Length(5)

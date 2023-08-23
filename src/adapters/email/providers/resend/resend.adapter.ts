@@ -17,13 +17,14 @@ export class ResendAdapter {
     Logger.log('sendMail', 'ResendAdapter');
 
     const sentMail = await this.resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to,
+      from: 'blog_app@resend.dev',
+      to: 'delivered@resend.dev', // TODO: Change the mail during production to the user's email
       subject,
       html: message,
     });
 
     if (!sentMail.id) {
+      Logger.error(sentMail, 'ResendAdapter');
       return false;
     }
 

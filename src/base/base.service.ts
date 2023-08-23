@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { IResponse } from './base.interface';
 
 @Injectable()
@@ -10,6 +10,7 @@ export class BaseService {
   ): Promise<IResponse> {
     const finalData = await data;
     const dateTime = new Date().toISOString();
+    Logger.log('transformResponse', 'BaseService');
 
     return {
       data: finalData,

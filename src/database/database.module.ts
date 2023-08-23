@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { Global, Logger, Module } from '@nestjs/common';
 import Knex from 'knex';
 import { Model } from 'objection';
 import KnexConfig from '../../knexfile';
@@ -9,7 +9,7 @@ import KnexConfig from '../../knexfile';
   providers: [
     {
       useFactory: () => {
-        // Initialize knex
+        Logger.log('initializing Knex', 'DatabaseModule');
         const knex = Knex(KnexConfig);
 
         // Give Instance of knex to the Objection

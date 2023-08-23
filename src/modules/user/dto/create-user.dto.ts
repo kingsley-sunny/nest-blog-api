@@ -10,9 +10,6 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
-  @Length(5)
+  @Length(8)
   password: string;
-
-  // @IsArray()
-  // user_roles: any[];
 }
