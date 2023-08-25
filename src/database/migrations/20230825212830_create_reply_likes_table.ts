@@ -3,14 +3,14 @@ import { Knex } from 'knex';
 import { DATABASE_TABLES } from '../database.tables';
 
 export async function up(knex: Knex): Promise<void> {
-  const isTableExists = await knex.schema.hasTable(DATABASE_TABLES.replies);
+  const isTableExists = await knex.schema.hasTable(DATABASE_TABLES.reply_likes);
 
   if (isTableExists) {
-    knex.schema.dropTable(DATABASE_TABLES.replies);
+    knex.schema.dropTable(DATABASE_TABLES.reply_likes);
   }
 
   return await knex.schema.createTable(
-    DATABASE_TABLES.replies,
+    DATABASE_TABLES.reply_likes,
     (tableBuilder) => {
       tableBuilder.bigIncrements('id').unique().primary().notNullable();
       tableBuilder
@@ -27,20 +27,11 @@ export async function up(knex: Knex): Promise<void> {
         .onDelete('CASCADE');
 
       tableBuilder
-        .bigint('post_id')
+        .bigint('reply_id')
         .unsigned()
         .references('id')
-        .inTable(DATABASE_TABLES.posts)
+        .inTable(DATABASE_TABLES.replies)
         .onDelete('CASCADE');
-
-      tableBuilder
-        .bigint('recipient_id')
-        .unsigned()
-        .references('id')
-        .inTable(DATABASE_TABLES.users)
-        .onDelete('CASCADE');
-
-      tableBuilder.string('text').notNullable();
 
       tableBuilder.timestamps(true, true);
     },
@@ -48,5 +39,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return await knex.schema.dropTable(DATABASE_TABLES.replies);
+  return await knex.schema.dropTable(DATABASE_TABLES.reply_likes);
 }
