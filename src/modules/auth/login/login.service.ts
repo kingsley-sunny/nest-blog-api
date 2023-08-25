@@ -27,7 +27,6 @@ export class LoginService {
           uuid: user.uuid,
           email: user.email,
           username: user.user_name,
-          roles: user.roles,
         }),
       };
     } catch (error) {

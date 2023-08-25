@@ -11,7 +11,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiAcceptedResponse,
+  ApiCreatedResponse,
+  ApiHeader,
+  ApiTags,
+} from '@nestjs/swagger';
 import { BaseService } from '../../base';
 import { BaseApiResponse } from '../../base/base-api-response';
 import { ROLES } from '../../base/base.constant';
@@ -22,8 +27,9 @@ import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
 @Roles(ROLES.OWNER, ROLES.ADMIN)
+@ApiHeader({ name: 'accessToken' })
 @Controller('/categories')
-@ApiTags('categories')
+@ApiTags('categories - for admin only')
 export class CategoryController {
   @Inject(CategoryService)
   private categoryService: CategoryService;
@@ -34,7 +40,7 @@ export class CategoryController {
       data: CategoryModel,
       message: 'Successfully Created Category',
       statusCode: 201,
-      isPaginate: true,
+      isPaginate: false,
     }),
   })
   async create(@Body() data: CreateCategoryDto) {
@@ -46,6 +52,14 @@ export class CategoryController {
     );
   }
 
+  @ApiAcceptedResponse({
+    type: BaseApiResponse({
+      data: CategoryModel,
+      message: 'Successful',
+      statusCode: 200,
+      isPaginate: true,
+    }),
+  })
   @Get()
   async find(@Query() params: FetchQuery) {
     const categories = await this.categoryService.find(params);
@@ -53,6 +67,14 @@ export class CategoryController {
     return BaseService.transformResponse(categories, 'Successful');
   }
 
+  @ApiAcceptedResponse({
+    type: BaseApiResponse({
+      data: CategoryModel,
+      message: 'Successful',
+      statusCode: 200,
+      isPaginate: false,
+    }),
+  })
   @Get(':id')
   async findById(@Param('id') id: number) {
     const category = await this.categoryService.findById(id);
@@ -60,6 +82,14 @@ export class CategoryController {
     return BaseService.transformResponse(category, 'Successful');
   }
 
+  @ApiCreatedResponse({
+    type: BaseApiResponse({
+      data: CategoryModel,
+      message: 'Successfully Updated Category',
+      statusCode: 201,
+      isPaginate: false,
+    }),
+  })
   @Patch(':id')
   async update(@Param('id') id: number, @Body() data: CreateCategoryDto) {
     const category = await this.categoryService.update(id, data);
@@ -67,6 +97,14 @@ export class CategoryController {
     return BaseService.transformResponse(category, 'Successful');
   }
 
+  @ApiAcceptedResponse({
+    type: BaseApiResponse({
+      data: Number,
+      message: 'Successfully Deleted Category',
+      statusCode: 200,
+      isPaginate: false,
+    }),
+  })
   @Delete(':id')
   async delete(@Param('id') id: number) {
     try {

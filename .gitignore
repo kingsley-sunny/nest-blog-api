@@ -37,3 +37,6 @@ lerna-debug.log*
 
 # Env 
 .env
+
+# Open api file
+open-api.json

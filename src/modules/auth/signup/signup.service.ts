@@ -19,7 +19,10 @@ export class SignUpService {
     const { email } = data;
     let user: IUser;
 
-    user = await this.userService.findOne({ email: email });
+    user = await this.userService.findOne({
+      email: email.toLowerCase(),
+      user_name: data.user_name.toLowerCase(),
+    });
 
     if (user) {
       throw new NotFoundException('This user already exists');
@@ -28,6 +31,8 @@ export class SignUpService {
     try {
       user = await this.userService.create({
         ...data,
+        email: email.toLowerCase(),
+        user_name: data.user_name.toLowerCase(),
       });
 
       return user;
