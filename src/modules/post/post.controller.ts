@@ -60,7 +60,7 @@ export class PostController {
 
     posts.posts = posts.posts.map((post) => ({
       ...post,
-      likes: post.likes[0].total,
+      likes: post.likes.length > 0 ? post.likes[0].total : 0,
     }));
 
     return BaseService.transformResponse(posts, 'Successful');

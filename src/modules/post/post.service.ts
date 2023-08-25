@@ -46,7 +46,7 @@ export class PostService {
       const posts = await this.postRepository.find({}, params, '[likes]', {
         relationship: 'likes',
         modifier(builder) {
-          builder.count('id', { as: 'total' });
+          builder.count('id', { as: 'total' }).groupBy('id');
         },
       });
 

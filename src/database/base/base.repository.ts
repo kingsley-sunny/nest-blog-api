@@ -87,7 +87,9 @@ export abstract class BaseRepository<ModelInterface = any> {
       >;
     },
   ): Promise<
-    IPaginatedResponse<Objection.QueryBuilder<Model, ModelInterface[]>>
+    IPaginatedResponse<
+      Objection.QueryBuilder<Model, Required<ModelInterface[]>>
+    >
   > {
     Logger.log('find', 'BaseRepository');
 
