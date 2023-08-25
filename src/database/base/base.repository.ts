@@ -23,6 +23,12 @@ export abstract class BaseRepository<ModelInterface = any> {
     model?: Partial<ModelInterface>,
     params?: FetchQuery,
     graphFetch?: string,
+    graphModifier?: {
+      relationship: string;
+      modifier: Objection.Modifier<
+        Objection.QueryBuilder<Objection.Model, Objection.Model[]>
+      >;
+    },
   ): Objection.QueryBuilder<Model, ModelInterface[]> {
     Logger.log('findSync', 'BaseRepository');
 
@@ -33,6 +39,11 @@ export abstract class BaseRepository<ModelInterface = any> {
       .withGraphFetched(graphFetch)
       .where(model ?? {})
       .limit(limit);
+
+    if (graphModifier) {
+      const { modifier, relationship } = graphModifier;
+      result.modifyGraph(relationship, modifier);
+    }
 
     if (params?.page) {
       result = result.offset(limit * (params.page - 1 || 1));
@@ -69,12 +80,23 @@ export abstract class BaseRepository<ModelInterface = any> {
     model?: Partial<ModelInterface>,
     params?: FetchQuery,
     graphFetch?: string,
+    graphModifier?: {
+      relationship: string;
+      modifier: Objection.Modifier<
+        Objection.QueryBuilder<Objection.Model, Objection.Model[]>
+      >;
+    },
   ): Promise<
     IPaginatedResponse<Objection.QueryBuilder<Model, ModelInterface[]>>
   > {
     Logger.log('find', 'BaseRepository');
 
-    const result = await this.findSync(model, params, graphFetch);
+    const result = await this.findSync(
+      model,
+      params,
+      graphFetch,
+      graphModifier,
+    );
 
     const total = await this.model.query().resultSize();
 

@@ -8,4 +8,4 @@ import { LikeService } from './like.service';
   exports: [LikeService],
   providers: [LikeService, LikeRepository],
 })
-export class PostModule {}
+export class LikeModule {}

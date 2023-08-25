@@ -1,5 +1,7 @@
+import { Model, RelationMappings, RelationMappingsThunk } from 'objection';
 import { BaseModel } from '../../base/base.model';
 import { DATABASE_TABLES } from '../../database.tables';
+import { LikeModel } from '../like';
 import { IPost } from './post.interface';
 import { PostValidation } from './post.validation';
 
@@ -21,5 +23,18 @@ export class PostModel extends BaseModel implements IPost {
 
   static get jsonSchema() {
     return PostValidation;
+  }
+
+  static get relationMappings(): RelationMappings | RelationMappingsThunk {
+    return {
+      likes: {
+        relation: Model.HasManyRelation,
+        modelClass: LikeModel,
+        join: {
+          from: `${DATABASE_TABLES.posts}.id`,
+          to: `${DATABASE_TABLES.likes}.post_id`,
+        },
+      },
+    };
   }
 }

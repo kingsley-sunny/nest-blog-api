@@ -11,6 +11,7 @@ import { RolesGuard } from './guards/roles.guard';
 import { UserModule } from './modules';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoryModule } from './modules/category';
+import { LikeModule } from './modules/like';
 import { PostModule } from './modules/post';
 import { UserRoleModule } from './modules/user-role';
 import { UtilsModule } from './utils/utils.module';
@@ -28,6 +29,7 @@ import { UtilsModule } from './utils/utils.module';
     AdapterModule,
     CategoryModule,
     PostModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [

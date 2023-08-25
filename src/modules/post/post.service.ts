@@ -43,7 +43,14 @@ export class PostService {
     Logger.log('find', 'PostService');
 
     try {
-      const posts = await this.postRepository.find({}, params);
+      const posts = await this.postRepository.find({}, params, '[likes]', {
+        relationship: 'likes',
+        modifier(builder) {
+          builder.count('id', { as: 'total' });
+        },
+      });
+
+      this.postRepository.model.query().count('*');
 
       return posts;
     } catch (error) {

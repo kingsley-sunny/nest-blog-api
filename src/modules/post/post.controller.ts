@@ -56,7 +56,12 @@ export class PostController {
   })
   @Get()
   async find(@Query() params: FetchQuery) {
-    const posts = await this.postService.find(params);
+    const posts: any = await this.postService.find(params);
+
+    posts.posts = posts.posts.map((post) => ({
+      ...post,
+      likes: post.likes[0].total,
+    }));
 
     return BaseService.transformResponse(posts, 'Successful');
   }
