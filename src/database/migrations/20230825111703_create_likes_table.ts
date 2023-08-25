@@ -3,14 +3,14 @@ import { Knex } from 'knex';
 import { DATABASE_TABLES } from '../database.tables';
 
 export async function up(knex: Knex): Promise<void> {
-  const isTableExists = await knex.schema.hasTable(DATABASE_TABLES.posts);
+  const isTableExists = await knex.schema.hasTable(DATABASE_TABLES.likes);
 
   if (isTableExists) {
-    knex.schema.dropTable(DATABASE_TABLES.posts);
+    knex.schema.dropTable(DATABASE_TABLES.likes);
   }
 
   return await knex.schema.createTable(
-    DATABASE_TABLES.posts,
+    DATABASE_TABLES.likes,
     (tableBuilder) => {
       tableBuilder.bigIncrements('id').unique().primary().notNullable();
       tableBuilder
@@ -18,10 +18,6 @@ export async function up(knex: Knex): Promise<void> {
         .notNullable()
         .unique()
         .defaultTo(knex.raw('(UUID())'));
-
-      tableBuilder.string('title').notNullable();
-      tableBuilder.string('description').notNullable();
-      tableBuilder.string('content').notNullable();
 
       tableBuilder
         .bigint('user_id')
@@ -31,10 +27,10 @@ export async function up(knex: Knex): Promise<void> {
         .onDelete('CASCADE');
 
       tableBuilder
-        .bigint('category_id')
+        .bigint('post_id')
         .unsigned()
         .references('id')
-        .inTable(DATABASE_TABLES.categories)
+        .inTable(DATABASE_TABLES.posts)
         .onDelete('CASCADE');
 
       tableBuilder.timestamps(true, true);
@@ -43,5 +39,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return await knex.schema.dropTable(DATABASE_TABLES.posts);
+  return await knex.schema.dropTable(DATABASE_TABLES.likes);
 }
