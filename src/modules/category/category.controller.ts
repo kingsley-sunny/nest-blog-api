@@ -4,8 +4,6 @@ import {
   Delete,
   Get,
   Inject,
-  InternalServerErrorException,
-  Logger,
   Param,
   Patch,
   Post,
@@ -107,14 +105,11 @@ export class CategoryController {
   })
   @Delete(':id')
   async delete(@Param('id') id: number) {
-    try {
-      const deleted = await this.categoryService.delete(id);
+    const deleted = await this.categoryService.delete(id);
 
-      return deleted;
-    } catch (error) {
-      Logger.error(error.message);
-
-      throw new InternalServerErrorException(error.message);
-    }
+    return BaseService.transformResponse(
+      { status: deleted },
+      'Successfully Deleted category',
+    );
   }
 }

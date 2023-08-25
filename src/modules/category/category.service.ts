@@ -82,6 +82,12 @@ export class CategoryService {
   async delete(id: number) {
     Logger.log('delete', 'CategoryService');
 
-    return await this.categoryRepository.delete(id);
+    try {
+      return await this.categoryRepository.delete(id);
+    } catch (error) {
+      Logger.error(error.message, 'CategoryService');
+
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

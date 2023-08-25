@@ -76,4 +76,26 @@ export class UtilsService {
       </html>
       `;
   }
+
+  /**
+   * cleanUpData
+   */
+  public cleanUpData<T extends Record<any, any> = Record<any, any>>(
+    data: T,
+    keys?: (keyof T)[],
+  ): T {
+    delete data.password;
+    delete data.created_at;
+    delete data.deleted_at;
+    delete data.updated_at;
+    delete data.id;
+
+    if (keys) {
+      for (const key of keys) {
+        Reflect.deleteProperty(data, key);
+      }
+    }
+
+    return data;
+  }
 }
