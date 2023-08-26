@@ -43,12 +43,25 @@ export class ReplyService {
     let replies: any;
     try {
       if (commentId) {
-        replies = await this.replyRepository.find(
-          { comment_id: commentId },
-          params,
-        );
+        replies = await this.replyRepository
+          .findSync({ comment_id: commentId }, params)
+          .select(
+            `*`,
+            this.replyRepository.model
+              .relatedQuery('likes')
+              .count()
+              .as('likes'),
+          );
       } else {
-        replies = await this.replyRepository.find({}, params);
+        replies = await this.replyRepository
+          .findSync({}, params)
+          .select(
+            `*`,
+            this.replyRepository.model
+              .relatedQuery('likes')
+              .count()
+              .as('likes'),
+          );
       }
 
       return replies;

@@ -1,5 +1,7 @@
+import { Model, RelationMappings, RelationMappingsThunk } from 'objection';
 import { BaseModel } from '../../base/base.model';
 import { DATABASE_TABLES } from '../../database.tables';
+import { CommentLikeModel } from '../commentLike';
 import { IComment } from './comment.interface';
 import { CommentValidation } from './comment.validation';
 
@@ -19,5 +21,18 @@ export class CommentModel extends BaseModel implements IComment {
 
   static get jsonSchema() {
     return CommentValidation;
+  }
+
+  static get relationMappings(): RelationMappings | RelationMappingsThunk {
+    return {
+      likes: {
+        relation: Model.HasManyRelation,
+        modelClass: CommentLikeModel,
+        join: {
+          from: `${DATABASE_TABLES.comments}.id`,
+          to: `${DATABASE_TABLES.comment_likes}.comment_id`,
+        },
+      },
+    };
   }
 }

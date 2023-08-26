@@ -1,7 +1,9 @@
+import { Model, RelationMappings, RelationMappingsThunk } from 'objection';
 import { BaseModel } from '../../base/base.model';
 import { DATABASE_TABLES } from '../../database.tables';
 import { IReply } from './reply.interface';
 import { ReplyValidation } from './reply.validation';
+import { ReplyLikeModel } from '../replyLIke';
 
 export class ReplyModel extends BaseModel implements IReply {
   public id: IReply['id'];
@@ -20,5 +22,18 @@ export class ReplyModel extends BaseModel implements IReply {
 
   static get jsonSchema() {
     return ReplyValidation;
+  }
+
+  static get relationMappings(): RelationMappings | RelationMappingsThunk {
+    return {
+      likes: {
+        relation: Model.HasManyRelation,
+        modelClass: ReplyLikeModel,
+        join: {
+          from: `${DATABASE_TABLES.replies}.id`,
+          to: `${DATABASE_TABLES.reply_likes}.reply_id`,
+        },
+      },
+    };
   }
 }

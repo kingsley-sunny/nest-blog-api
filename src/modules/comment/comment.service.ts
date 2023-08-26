@@ -5,6 +5,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { DATABASE_TABLES } from '../../database';
 import { FetchQuery } from '../../database/base/base.interface';
 import { IComment } from '../../database/models/comment';
 import { CommentRepository } from './comment.repository';
@@ -42,15 +43,34 @@ export class CommentService {
     let comments: any;
     try {
       if (postId) {
-        comments = await this.commentRepository.find(
-          { post_id: postId },
-          params,
-        );
+        comments = await this.commentRepository
+          .findSync({ post_id: postId }, params)
+          .select(
+            `${DATABASE_TABLES.comments}.*`,
+            this.commentRepository.model
+              .relatedQuery('likes')
+              .count()
+              .as('likes'),
+          );
       } else {
-        comments = await this.commentRepository.find({}, params);
+        comments = await this.commentRepository
+          .findSync({}, params)
+          .select(
+            `${DATABASE_TABLES.comments}.*`,
+            this.commentRepository.model
+              .relatedQuery('likes')
+              .count()
+              .as('likes'),
+          );
       }
 
-      return comments;
+      const paginatedComments = await this.commentRepository.paginateData(
+        comments,
+        params.limit,
+        params.page,
+      );
+
+      return paginatedComments;
     } catch (error) {
       Logger.log(error.message, 'CommentService');
 
