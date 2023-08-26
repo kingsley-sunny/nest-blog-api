@@ -23,11 +23,13 @@ export async function up(knex: Knex): Promise<void> {
         .bigint('user_id')
         .unsigned()
         .references('id')
+        .notNullable()
         .inTable(DATABASE_TABLES.users)
         .onDelete('CASCADE');
 
       tableBuilder
         .bigint('comment_id')
+        .notNullable()
         .unsigned()
         .references('id')
         .inTable(DATABASE_TABLES.comments)

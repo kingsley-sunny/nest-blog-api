@@ -10,5 +10,6 @@ export const PostValidation: JSONSchema = {
     description: { type: 'string' },
     category_id: { type: 'number' },
     content: { type: 'string' },
+    image_id: { type: 'number' },
   },
 };

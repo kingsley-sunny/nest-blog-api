@@ -3,5 +3,5 @@
     "**/node_modules": true
   },
   "search.useIgnoreFiles": true,
-  "cSpell.words": ["knexfile"]
+  "cSpell.words": ["blurhash", "knexfile"]
 }

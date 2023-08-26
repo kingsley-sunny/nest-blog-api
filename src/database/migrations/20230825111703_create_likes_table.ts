@@ -23,6 +23,7 @@ export async function up(knex: Knex): Promise<void> {
         .bigint('user_id')
         .unsigned()
         .references('id')
+        .notNullable()
         .inTable(DATABASE_TABLES.users)
         .onDelete('CASCADE');
 
@@ -30,6 +31,7 @@ export async function up(knex: Knex): Promise<void> {
         .bigint('post_id')
         .unsigned()
         .references('id')
+        .notNullable()
         .inTable(DATABASE_TABLES.posts)
         .onDelete('CASCADE');
 

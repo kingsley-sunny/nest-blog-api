@@ -6,4 +6,5 @@ export interface IPost extends IBase {
   description: string;
   category_id: number;
   content: string;
+  image_id: number;
 }

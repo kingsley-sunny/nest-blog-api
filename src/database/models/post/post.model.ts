@@ -2,6 +2,7 @@ import { Model, RelationMappings, RelationMappingsThunk } from 'objection';
 import { BaseModel } from '../../base/base.model';
 import { DATABASE_TABLES } from '../../database.tables';
 import { LikeModel } from '../like';
+import { PostImageModel } from '../postImage';
 import { IPost } from './post.interface';
 import { PostValidation } from './post.validation';
 
@@ -16,6 +17,7 @@ export class PostModel extends BaseModel implements IPost {
   public description: IPost['description'];
   public category_id: IPost['category_id'];
   public content: IPost['content'];
+  public image_id: IPost['image_id'];
 
   static get tableName() {
     return DATABASE_TABLES.posts;
@@ -33,6 +35,14 @@ export class PostModel extends BaseModel implements IPost {
         join: {
           from: `${DATABASE_TABLES.posts}.id`,
           to: `${DATABASE_TABLES.likes}.post_id`,
+        },
+      },
+      image: {
+        relation: Model.HasOneRelation,
+        modelClass: PostImageModel,
+        join: {
+          from: `${DATABASE_TABLES.posts}.id`,
+          to: `${DATABASE_TABLES.post_images}.post_id`,
         },
       },
     };
