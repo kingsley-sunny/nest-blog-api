@@ -37,12 +37,6 @@ export class LoginController {
   async create(@Body() data: LoginDto, @Request() req: Request) {
     const user = await this.loginService.create((req as any).user);
 
-    this.emailAdapter.sendMail(
-      'ezeobisunny51@gmail.com',
-      'Welcome',
-      `<h1>You ares welcome and this mail is working</h1>`,
-    );
-
     return BaseService.transformResponse(user, 'User Successfully logged in');
   }
 }
