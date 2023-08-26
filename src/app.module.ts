@@ -14,6 +14,7 @@ import { CategoryModule } from './modules/category';
 import { CommentModule } from './modules/comment';
 import { LikeModule } from './modules/like';
 import { PostModule } from './modules/post';
+import { ReplyModule } from './modules/reply';
 import { UserRoleModule } from './modules/user-role';
 import { UtilsModule } from './utils/utils.module';
 
@@ -32,6 +33,7 @@ import { UtilsModule } from './utils/utils.module';
     PostModule,
     LikeModule,
     CommentModule,
+    ReplyModule,
   ],
   controllers: [AppController],
   providers: [

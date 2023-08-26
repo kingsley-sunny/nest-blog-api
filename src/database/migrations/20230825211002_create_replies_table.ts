@@ -27,10 +27,10 @@ export async function up(knex: Knex): Promise<void> {
         .onDelete('CASCADE');
 
       tableBuilder
-        .bigint('post_id')
+        .bigint('comment_id')
         .unsigned()
         .references('id')
-        .inTable(DATABASE_TABLES.posts)
+        .inTable(DATABASE_TABLES.comments)
         .onDelete('CASCADE');
 
       tableBuilder

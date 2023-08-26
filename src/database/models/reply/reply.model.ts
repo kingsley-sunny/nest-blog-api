@@ -9,7 +9,7 @@ export class ReplyModel extends BaseModel implements IReply {
   public created_at: IReply['created_at'];
   public updated_at: IReply['updated_at'];
 
-  public post_id: IReply['post_id'];
+  public comment_id: IReply['comment_id'];
   public user_id: IReply['user_id'];
   public recipient_id: IReply['recipient_id'];
   public text: IReply['text'];
