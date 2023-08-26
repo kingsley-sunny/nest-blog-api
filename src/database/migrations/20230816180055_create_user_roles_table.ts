@@ -21,17 +21,17 @@ export async function up(knex: Knex): Promise<void> {
 
       tableBuilder
         .bigint('user_id')
-        .unsigned()
         .notNullable()
+        .unsigned()
         .references('id')
         .inTable(DATABASE_TABLES.users)
         .onDelete('CASCADE');
 
       tableBuilder
         .bigint('role_id')
+        .notNullable()
         .unsigned()
         .references('id')
-        .notNullable()
         .inTable(DATABASE_TABLES.roles)
         .onDelete('CASCADE');
 

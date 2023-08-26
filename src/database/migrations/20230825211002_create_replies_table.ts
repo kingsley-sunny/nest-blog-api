@@ -21,9 +21,9 @@ export async function up(knex: Knex): Promise<void> {
 
       tableBuilder
         .bigint('user_id')
+        .notNullable()
         .unsigned()
         .references('id')
-        .notNullable()
         .inTable(DATABASE_TABLES.users)
         .onDelete('CASCADE');
 
@@ -37,6 +37,7 @@ export async function up(knex: Knex): Promise<void> {
 
       tableBuilder
         .bigint('recipient_id')
+        .notNullable()
         .unsigned()
         .references('id')
         .inTable(DATABASE_TABLES.users)
