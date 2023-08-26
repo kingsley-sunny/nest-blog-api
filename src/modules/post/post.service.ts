@@ -5,6 +5,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { DATABASE_TABLES } from '../../database';
 import { FetchQuery } from '../../database/base/base.interface';
 import { IPost } from '../../database/models/post';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -43,16 +44,20 @@ export class PostService {
     Logger.log('find', 'PostService');
 
     try {
-      const posts = await this.postRepository.find({}, params, '[likes]', {
-        relationship: 'likes',
-        modifier(builder) {
-          builder.count('id', { as: 'total' }).groupBy('id');
-        },
-      });
+      const posts = await this.postRepository
+        .findSync({}, params)
+        .select(
+          `${DATABASE_TABLES.posts}.*`,
+          this.postRepository.model.relatedQuery('likes').count().as('likes'),
+        );
 
-      this.postRepository.model.query().count('*');
+      const paginatedPost = await this.postRepository.paginateData(
+        posts,
+        params.limit,
+        params.page,
+      );
 
-      return posts;
+      return paginatedPost;
     } catch (error) {
       Logger.log(error.message, 'PostService');
 

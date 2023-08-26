@@ -21,11 +21,12 @@ export class ReplyService {
 
     let reply: IReply;
     try {
-      const { comment_id, text } = data;
+      const { comment_id, text, recipient_id } = data;
 
       reply = await this.replyRepository.create({
         text,
         comment_id,
+        recipient_id,
         user_id: userId,
       });
     } catch (error) {

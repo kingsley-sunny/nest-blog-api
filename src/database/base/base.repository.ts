@@ -38,6 +38,7 @@ export abstract class BaseRepository<ModelInterface = any> {
       .query()
       .withGraphFetched(graphFetch)
       .where(model ?? {})
+      .orderBy('updated_at', 'desc')
       .limit(limit);
 
     if (graphModifier) {
@@ -100,23 +101,21 @@ export abstract class BaseRepository<ModelInterface = any> {
       graphModifier,
     );
 
-    const total = await this.model.query().resultSize();
-
-    return this.paginateData(
-      total,
+    return await this.paginateData(
       result,
       Number(params.limit),
       Number(params.page),
     );
   }
 
-  paginateData(
-    total: number,
+  async paginateData(
     data: Record<any, any>[],
-    limit: number,
+    limit?: number,
     currentPage = 1,
-  ): IPaginatedResponse {
+  ): Promise<IPaginatedResponse> {
     Logger.log('paginateData', 'BaseRepository');
+
+    const total = await this.model.query().resultSize();
 
     if (!limit) {
       limit = NO_OF_LIMITED_QUERIES;
