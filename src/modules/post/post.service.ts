@@ -8,6 +8,8 @@ import {
 import { DATABASE_TABLES } from '../../database';
 import { FetchQuery } from '../../database/base/base.interface';
 import { IPost } from '../../database/models/post';
+import { IPostImage } from '../../database/models/postImage';
+import { PostImageService } from '../post-image';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostRepository } from './post.repository';
@@ -16,8 +18,14 @@ import { PostRepository } from './post.repository';
 export class PostService {
   @Inject(PostRepository)
   postRepository: PostRepository;
+  @Inject(PostImageService)
+  postImageService: PostImageService;
 
-  async create(data: CreatePostDto, userId: number) {
+  async create(
+    data: CreatePostDto,
+    userId: number,
+    file?: Express.Multer.File,
+  ) {
     Logger.log('create', 'PostService');
 
     let post: IPost;
@@ -31,8 +39,24 @@ export class PostService {
         description,
         user_id: userId,
       });
+
+      let uploadedFile: IPostImage;
+      if (file) {
+        uploadedFile = await this.postImageService.create(
+          { post_id: post.id },
+          file,
+        );
+        console.log(
+          '🚀 ~~ file: post.service.ts:49 ~~ PostService ~~ uploadedFile:',
+          uploadedFile,
+        );
+      }
     } catch (error) {
       Logger.log(error.message, 'PostService');
+
+      if (post) {
+        this.delete(post.id);
+      }
 
       throw new InternalServerErrorException(error.message);
     }
@@ -45,7 +69,7 @@ export class PostService {
 
     try {
       const posts = await this.postRepository
-        .findSync({}, params)
+        .findSync({}, params, '[image]')
         .select(
           `${DATABASE_TABLES.posts}.*`,
           this.postRepository.model.relatedQuery('likes').count().as('likes'),

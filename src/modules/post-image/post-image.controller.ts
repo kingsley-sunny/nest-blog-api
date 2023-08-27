@@ -14,51 +14,50 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiAcceptedResponse,
-  ApiConsumes,
   ApiCreatedResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { BaseService } from '../../base';
 import { BaseApiResponse } from '../../base/base-api-response';
 import { FetchQuery } from '../../database/base/base.interface';
-import { PostModel } from '../../database/models/post';
+import { PostImageModel } from '../../database/models/postImage';
 import { Public } from '../../decorators/public.decorator';
-import { UserId } from '../../decorators/userId.decorator';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
-import { PostService } from './post.service';
+import { CreatePostImageDto } from './dto/create-post-image.dto';
+import { UpdatePostImageDto } from './dto/update-post-image.dto';
+import { PostImageService } from './post-image.service';
 
-@Controller('/posts')
-@ApiTags('posts')
-export class PostController {
-  @Inject(PostService)
-  private postService: PostService;
+@Controller('/post-images')
+@ApiTags('post-images')
+export class PostImageController {
+  @Inject(PostImageService)
+  private postImageService: PostImageService;
 
   @Post()
   @ApiCreatedResponse({
     type: BaseApiResponse({
-      data: PostModel,
-      message: 'Post Created Successfully',
+      data: PostImageModel,
+      message: 'PostImage Created Successfully',
       statusCode: 201,
       isPaginate: false,
     }),
   })
   @UseInterceptors(FileInterceptor('file'))
-  @ApiConsumes('multipart/form-data')
   async create(
-    @Body() data: CreatePostDto,
-    @UserId() userId: number,
+    @Body() data: CreatePostImageDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const post = await this.postService.create(data, userId, file);
+    const postImage = await this.postImageService.create(data, file);
 
-    return BaseService.transformResponse(post, 'Post Created Successfully');
+    return BaseService.transformResponse(
+      postImage,
+      'PostImage Created Successfully',
+    );
   }
 
   @Public()
   @ApiAcceptedResponse({
     type: BaseApiResponse({
-      data: PostModel,
+      data: PostImageModel,
       message: 'Successful',
       statusCode: 200,
       isPaginate: true,
@@ -66,15 +65,15 @@ export class PostController {
   })
   @Get()
   async find(@Query() params: FetchQuery) {
-    const posts: any = await this.postService.find(params);
+    const postImages: any = await this.postImageService.find(params);
 
-    return BaseService.transformResponse(posts, 'Successful');
+    return BaseService.transformResponse(postImages, 'Successful');
   }
 
   @Public()
   @ApiAcceptedResponse({
     type: BaseApiResponse({
-      data: PostModel,
+      data: PostImageModel,
       message: 'Successful',
       statusCode: 200,
       isPaginate: false,
@@ -82,45 +81,44 @@ export class PostController {
   })
   @Get(':id')
   async findById(@Param('id') id: number) {
-    const post = await this.postService.findById(id);
+    const postImage = await this.postImageService.findById(id);
 
-    return BaseService.transformResponse(post, 'Successful');
+    return BaseService.transformResponse(postImage, 'Successful');
   }
 
   @ApiCreatedResponse({
     type: BaseApiResponse({
-      data: PostModel,
-      message: 'Successfully Updated Post',
+      data: PostImageModel,
+      message: 'Successfully Updated PostImage',
       statusCode: 201,
       isPaginate: false,
     }),
   })
   @Patch(':id')
-  async update(
-    @Param('id') id: number,
-    @Body() data: UpdatePostDto,
-    @UserId() userId: number,
-  ) {
-    const post = await this.postService.update(id, data, userId);
+  async update(@Param('id') id: number, @Body() data: UpdatePostImageDto) {
+    const postImage = await this.postImageService.update(id, data);
 
-    return BaseService.transformResponse(post, 'Successfully Updated Post');
+    return BaseService.transformResponse(
+      postImage,
+      'Successfully Updated PostImage',
+    );
   }
 
   @ApiAcceptedResponse({
     type: BaseApiResponse({
       data: Number,
-      message: 'Successfully Deleted Post',
+      message: 'Successfully Deleted PostImage',
       statusCode: 200,
       isPaginate: false,
     }),
   })
   @Delete(':id')
   async delete(@Param('id') id: number) {
-    const deleted = await this.postService.delete(id);
+    const deleted = await this.postImageService.delete(id);
 
     return BaseService.transformResponse(
       { status: deleted },
-      'Successfully Deleted Post',
+      'Successfully Deleted PostImage',
     );
   }
 }

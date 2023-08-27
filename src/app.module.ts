@@ -15,6 +15,7 @@ import { CommentModule } from './modules/comment';
 import { CommentLikeModule } from './modules/comment-like';
 import { LikeModule } from './modules/like';
 import { PostModule } from './modules/post';
+import { PostImageModule } from './modules/post-image';
 import { ReplyModule } from './modules/reply';
 import { ReplyLikeModule } from './modules/reply-like';
 import { UserRoleModule } from './modules/user-role';
@@ -38,6 +39,7 @@ import { UtilsModule } from './utils/utils.module';
     ReplyModule,
     CommentLikeModule,
     ReplyLikeModule,
+    PostImageModule,
   ],
   controllers: [AppController],
   providers: [

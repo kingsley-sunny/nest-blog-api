@@ -20,11 +20,14 @@ export class FileAdapter implements IFileManagement {
 
       return uploadedResponse;
     } catch (error) {
-      Logger.error(error.message);
+      console.log(error);
+      Logger.error(error);
 
-      throw new InternalServerErrorException(
-        'Something went wrong with uploading the image',
-      );
+      throw new InternalServerErrorException(error);
+
+      // throw new InternalServerErrorException(
+      //   'Something went wrong with uploading the image',
+      // );
     }
   }
 }

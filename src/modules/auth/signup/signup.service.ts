@@ -47,6 +47,8 @@ export class SignUpService {
         `<h1>You are welcome To our blog website</h1>`,
       );
 
+      delete user.password;
+
       return {
         ...user,
         accessToken: this.jwtService.sign({

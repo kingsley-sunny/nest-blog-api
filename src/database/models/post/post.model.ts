@@ -17,7 +17,6 @@ export class PostModel extends BaseModel implements IPost {
   public description: IPost['description'];
   public category_id: IPost['category_id'];
   public content: IPost['content'];
-  public image_id: IPost['image_id'];
 
   static get tableName() {
     return DATABASE_TABLES.posts;
