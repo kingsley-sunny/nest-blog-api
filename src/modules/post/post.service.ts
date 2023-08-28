@@ -40,16 +40,8 @@ export class PostService {
         user_id: userId,
       });
 
-      let uploadedFile: IPostImage;
       if (file) {
-        uploadedFile = await this.postImageService.create(
-          { post_id: post.id },
-          file,
-        );
-        console.log(
-          '🚀 ~~ file: post.service.ts:49 ~~ PostService ~~ uploadedFile:',
-          uploadedFile,
-        );
+        await this.postImageService.create({ post_id: post.id }, file);
       }
     } catch (error) {
       Logger.log(error.message, 'PostService');
@@ -108,19 +100,33 @@ export class PostService {
     return post;
   }
 
-  async update(id: number, data: UpdatePostDto, userId: number) {
+  async update(
+    id: number,
+    data: UpdatePostDto,
+    userId: number,
+    file?: Express.Multer.File,
+  ) {
     Logger.log('update', 'PostService');
 
-    let post = await this.postRepository.findOne({ id, user_id: userId });
+    const existingPost: IPost & { image?: IPostImage } =
+      await this.postRepository.findOne({ id, user_id: userId }, {}, 'image');
 
-    if (!post) {
+    if (!existingPost) {
       throw new NotFoundException('Post Not found');
     }
 
     try {
-      post = await this.postRepository.update(id, data);
+      const newPost = await this.postRepository.update(id, data);
 
-      return post;
+      if (file && existingPost.image) {
+        await this.postImageService.update(existingPost.image.id, file);
+      }
+
+      if (file && !existingPost.image) {
+        await this.postImageService.create({ post_id: id }, file);
+      }
+
+      return newPost;
     } catch (error) {
       Logger.error(error.message, 'PostService');
 
@@ -131,7 +137,15 @@ export class PostService {
   async delete(id: number) {
     Logger.log('delete', 'PostService');
 
+    const post: IPost & { image?: IPostImage } =
+      await this.postRepository.findById(id, 'image');
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
     try {
+      await this.postImageService.delete(post.image.id, post.image.public_id);
       return await this.postRepository.delete(id);
     } catch (error) {
       Logger.error(error.message, 'PostService');

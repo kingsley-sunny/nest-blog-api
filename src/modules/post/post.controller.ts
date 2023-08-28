@@ -95,13 +95,16 @@ export class PostController {
       isPaginate: false,
     }),
   })
+  @ApiConsumes('multipart/form-data')
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('file'))
   async update(
     @Param('id') id: number,
     @Body() data: UpdatePostDto,
     @UserId() userId: number,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    const post = await this.postService.update(id, data, userId);
+    const post = await this.postService.update(Number(id), data, userId, file);
 
     return BaseService.transformResponse(post, 'Successfully Updated Post');
   }

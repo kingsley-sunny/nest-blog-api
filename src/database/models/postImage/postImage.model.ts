@@ -12,6 +12,7 @@ export class PostImageModel extends BaseModel implements IPostImage {
   public post_id: IPostImage['post_id'];
   public blurhash: IPostImage['blurhash'];
   public url: IPostImage['url'];
+  public public_id: IPostImage['public_id'];
 
   static get tableName() {
     return DATABASE_TABLES.post_images;

@@ -9,7 +9,6 @@ import { FileAdapter } from '../../adapters/file/file.adapter';
 import { FetchQuery } from '../../database/base/base.interface';
 import { IPostImage } from '../../database/models/postImage';
 import { CreatePostImageDto } from './dto/create-post-image.dto';
-import { UpdatePostImageDto } from './dto/update-post-image.dto';
 import { PostImageRepository } from './post-image.repository';
 
 @Injectable()
@@ -31,6 +30,7 @@ export class PostImageService {
       postImage = await this.postImageRepository.create({
         url: uploadedFile.url,
         post_id,
+        public_id: uploadedFile.public_id,
       });
     } catch (error) {
       Logger.log(error.message, 'PostImageService');
@@ -74,7 +74,7 @@ export class PostImageService {
     return postImage;
   }
 
-  async update(id: number, data: UpdatePostImageDto) {
+  async update(id: number, file?: Express.Multer.File) {
     Logger.log('update', 'PostImageService');
 
     let postImage = await this.postImageRepository.findOne({
@@ -85,8 +85,16 @@ export class PostImageService {
       throw new NotFoundException('PostImage Not found');
     }
 
+    const uploadedFile = await this.fileAdapter.updateFile(
+      postImage.public_id,
+      file,
+    );
+
     try {
-      postImage = await this.postImageRepository.update(id, data);
+      postImage = await this.postImageRepository.update(id, {
+        url: uploadedFile.url,
+        public_id: uploadedFile.public_id,
+      });
 
       return postImage;
     } catch (error) {
@@ -96,10 +104,12 @@ export class PostImageService {
     }
   }
 
-  async delete(id: number) {
+  async delete(id: number, publicId: string) {
     Logger.log('delete', 'PostImageService');
 
     try {
+      await this.fileAdapter.deleteFile(publicId);
+
       return await this.postImageRepository.delete(id);
     } catch (error) {
       Logger.error(error.message, 'PostImageService');

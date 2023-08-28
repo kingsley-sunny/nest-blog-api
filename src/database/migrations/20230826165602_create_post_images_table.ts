@@ -27,6 +27,8 @@ export async function up(knex: Knex): Promise<void> {
         .inTable(DATABASE_TABLES.posts)
         .onDelete('CASCADE');
 
+      tableBuilder.string('public_id').notNullable();
+
       tableBuilder.string('url').notNullable();
 
       tableBuilder.string('blurhash').nullable();

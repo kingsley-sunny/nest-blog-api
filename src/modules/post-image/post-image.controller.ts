@@ -23,7 +23,6 @@ import { FetchQuery } from '../../database/base/base.interface';
 import { PostImageModel } from '../../database/models/postImage';
 import { Public } from '../../decorators/public.decorator';
 import { CreatePostImageDto } from './dto/create-post-image.dto';
-import { UpdatePostImageDto } from './dto/update-post-image.dto';
 import { PostImageService } from './post-image.service';
 
 @Controller('/post-images')
@@ -95,8 +94,8 @@ export class PostImageController {
     }),
   })
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() data: UpdatePostImageDto) {
-    const postImage = await this.postImageService.update(id, data);
+  async update(@Param('id') id: number) {
+    const postImage = await this.postImageService.update(id);
 
     return BaseService.transformResponse(
       postImage,
@@ -114,7 +113,9 @@ export class PostImageController {
   })
   @Delete(':id')
   async delete(@Param('id') id: number) {
-    const deleted = await this.postImageService.delete(id);
+    const image = await this.postImageService.findById(id);
+
+    const deleted = await this.postImageService.delete(id, image.public_id);
 
     return BaseService.transformResponse(
       { status: deleted },

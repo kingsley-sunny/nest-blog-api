@@ -146,6 +146,12 @@ export abstract class BaseRepository<ModelInterface = any> {
     model: Partial<ModelInterface>,
     params?: FetchQuery,
     graphFetch?: string,
+    graphModifier?: {
+      relationship: string;
+      modifier: Objection.Modifier<
+        Objection.QueryBuilder<Objection.Model, Objection.Model[]>
+      >;
+    },
   ): Objection.QueryBuilder<Model, Required<ModelInterface>> {
     Logger.log('findOne', 'BaseRepository');
 
@@ -156,6 +162,11 @@ export abstract class BaseRepository<ModelInterface = any> {
       .withGraphFetched(graphFetch)
       .findOne(model)
       .limit(limit);
+
+    if (graphModifier) {
+      const { modifier, relationship } = graphModifier;
+      result.modifyGraph(relationship, modifier);
+    }
 
     if (params?.page) {
       result = result.offset(limit * (params.page - 1 || 1));
@@ -186,33 +197,90 @@ export abstract class BaseRepository<ModelInterface = any> {
     >;
   }
 
-  async findById(id: number) {
+  async findById(
+    id: number,
+    graphFetch?: string,
+    graphModifier?: {
+      relationship: string;
+      modifier: Objection.Modifier<
+        Objection.QueryBuilder<Objection.Model, Objection.Model[]>
+      >;
+    },
+  ) {
     Logger.log('findById', 'BaseRepository');
 
     const data = await this.model.query().findById(id);
 
-    return data;
+    await data.$fetchGraph(graphFetch);
+
+    return data as any as Objection.QueryBuilder<
+      Model,
+      Required<ModelInterface>
+    >;
   }
 
   async update(
     data: Partial<ModelInterface>,
     data2: Partial<ModelInterface>,
+    graphFetch?: string,
+    graphModifier?: {
+      relationship: string;
+      modifier: Objection.Modifier<
+        Objection.QueryBuilder<Objection.Model, Objection.Model[]>
+      >;
+    },
   ): Promise<Required<ModelInterface>>;
   async update(
     id: number,
     data2: Partial<ModelInterface>,
+    graphFetch?: string,
+    graphModifier?: {
+      relationship: string;
+      modifier: Objection.Modifier<
+        Objection.QueryBuilder<Objection.Model, Objection.Model[]>
+      >;
+    },
   ): Promise<Required<ModelInterface>>;
   async update(
     idOrModel: number | Partial<ModelInterface>,
     data: Partial<ModelInterface>,
+    graphFetch?: string,
+    graphModifier?: {
+      relationship: string;
+      modifier: Objection.Modifier<
+        Objection.QueryBuilder<Objection.Model, Objection.Model[]>
+      >;
+    },
   ): Promise<Required<ModelInterface>> {
     Logger.log('update', 'BaseRepository');
 
-    let response: any;
+    let response;
     if (typeof idOrModel === 'number') {
-      response = await this.model.query().patchAndFetchById(idOrModel, data);
+      response = this.model.query().patchAndFetchById(idOrModel, data);
+
+      if (graphFetch) {
+        response.withGraphFetched(graphFetch);
+      }
+
+      if (graphModifier) {
+        response.modifyGraph(
+          graphModifier.relationship,
+          graphModifier.modifier,
+        );
+      }
     } else {
       response = await this.model.query().where(idOrModel).patch(data);
+
+      if (graphFetch) {
+        response.withGraphFetched(graphFetch);
+      }
+
+      if (graphModifier) {
+        response.modifyGraph(
+          graphModifier.relationship,
+          graphModifier.modifier,
+        );
+      }
     }
 
     return response as Required<ModelInterface>;

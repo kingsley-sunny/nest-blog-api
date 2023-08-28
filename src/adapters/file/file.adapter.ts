@@ -20,14 +20,42 @@ export class FileAdapter implements IFileManagement {
 
       return uploadedResponse;
     } catch (error) {
-      console.log(error);
       Logger.error(error);
 
       throw new InternalServerErrorException(error);
+    }
+  }
 
-      // throw new InternalServerErrorException(
-      //   'Something went wrong with uploading the image',
-      // );
+  async updateFile(
+    url: string,
+    file: Express.Multer.File,
+  ): Promise<IUploadedFileResponse> {
+    Logger.log('updateFile', 'FileAdapter');
+    try {
+      const uploadedResponse = await this.cloudinaryAdapter.updateFile(
+        url,
+        file,
+      );
+
+      return uploadedResponse;
+    } catch (error) {
+      Logger.error(error);
+
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async deleteFile(id: string): Promise<boolean> {
+    Logger.log('deleteFile', 'FileAdapter');
+
+    try {
+      await this.cloudinaryAdapter.deleteFile(id);
+
+      return true;
+    } catch (error) {
+      Logger.error(error);
+
+      throw new InternalServerErrorException(error);
     }
   }
 }
