@@ -15,6 +15,7 @@
     "mg:make": "knex migrate:make",
     "mg:seed-make": "knex seed:make ",
     "mg:seed": "knex seed:run",
+    "generate-doc": "ts-node src/generate-metadata.ts",
     "start": "nest start",
     "dev": "nest start --watch",
     "dev:debug": "nest start --debug --watch",
