@@ -30,7 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     );
 
     if (!user) {
-      throw new UnauthorizedException('Expired login session');
+      throw new UnauthorizedException('User Not Found');
     }
 
     return user;

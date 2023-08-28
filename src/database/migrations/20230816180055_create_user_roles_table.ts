@@ -21,6 +21,7 @@ export async function up(knex: Knex): Promise<void> {
 
       tableBuilder
         .bigint('user_id')
+        .notNullable()
         .unsigned()
         .references('id')
         .inTable(DATABASE_TABLES.users)
@@ -28,6 +29,7 @@ export async function up(knex: Knex): Promise<void> {
 
       tableBuilder
         .bigint('role_id')
+        .notNullable()
         .unsigned()
         .references('id')
         .inTable(DATABASE_TABLES.roles)

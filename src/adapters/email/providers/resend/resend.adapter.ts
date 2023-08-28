@@ -15,19 +15,20 @@ export class ResendAdapter {
     config?: any,
   ): Promise<boolean> {
     Logger.log('sendMail', 'ResendAdapter');
+    try {
+      const sentMail = await this.resend.emails.send({
+        from: 'blog_app@resend.dev',
+        to: 'delivered@resend.dev', // TODO: Change the mail during production to the user's email
+        subject,
+        html: message,
+      });
 
-    const sentMail = await this.resend.emails.send({
-      from: 'blog_app@resend.dev',
-      to: 'delivered@resend.dev', // TODO: Change the mail during production to the user's email
-      subject,
-      html: message,
-    });
+      if (!sentMail.id) {
+        Logger.error(sentMail, 'ResendAdapter');
+        return false;
+      }
 
-    if (!sentMail.id) {
-      Logger.error(sentMail, 'ResendAdapter');
-      return false;
-    }
-
-    return true;
+      return true;
+    } catch (error) {}
   }
 }

@@ -41,7 +41,7 @@ async function validate(
 
   if (!data) {
     throw new InternalServerErrorException(
-      options.message || `no ${propertyName} with the value ${value} found`,
+      options?.message || `no ${propertyName} with the value ${value} found`,
     );
   }
 

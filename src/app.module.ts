@@ -10,6 +10,14 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 import { UserModule } from './modules';
 import { AuthModule } from './modules/auth/auth.module';
+import { CategoryModule } from './modules/category';
+import { CommentModule } from './modules/comment';
+import { CommentLikeModule } from './modules/comment-like';
+import { LikeModule } from './modules/like';
+import { PostModule } from './modules/post';
+import { PostImageModule } from './modules/post-image';
+import { ReplyModule } from './modules/reply';
+import { ReplyLikeModule } from './modules/reply-like';
 import { UserRoleModule } from './modules/user-role';
 import { UtilsModule } from './utils/utils.module';
 
@@ -24,6 +32,14 @@ import { UtilsModule } from './utils/utils.module';
     AuthModule,
     UtilsModule,
     AdapterModule,
+    CategoryModule,
+    PostModule,
+    LikeModule,
+    CommentModule,
+    ReplyModule,
+    CommentLikeModule,
+    ReplyLikeModule,
+    PostImageModule,
   ],
   controllers: [AppController],
   providers: [
