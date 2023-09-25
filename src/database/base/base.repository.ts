@@ -34,11 +34,23 @@ export abstract class BaseRepository<ModelInterface = any> {
 
     const limit = params?.limit ?? NO_OF_LIMITED_QUERIES;
 
+    if (params.filterBy === 'password') {
+      delete params.filterBy;
+    }
+
+    if (params.orderBy === 'password') {
+      delete params.orderBy;
+    }
+
+    const orders: FetchQuery['order'][] = ['asc', 'desc'];
+
+    const order = orders.find((value) => value === params.order);
+
     let result = this.model
       .query()
       .withGraphFetched(graphFetch)
       .where(model ?? {})
-      .orderBy('updated_at', 'desc')
+      .orderBy(params.orderBy || 'updated_at', order || 'desc')
       .limit(limit);
 
     if (graphModifier) {

@@ -15,7 +15,7 @@ class Server {
     app.enableCors();
     Server.addMiddleware(app);
 
-    app.setGlobalPrefix('/api');
+    // app.setGlobalPrefix('/api');
 
     const documentation = await Server.configureSwagger(app);
 
