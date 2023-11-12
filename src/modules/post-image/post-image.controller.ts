@@ -19,12 +19,15 @@ import {
 } from '@nestjs/swagger';
 import { BaseService } from '../../base';
 import { BaseApiResponse } from '../../base/base-api-response';
+import { ROLES } from '../../base/base.constant';
 import { FetchQuery } from '../../database/base/base.interface';
 import { PostImageModel } from '../../database/models/postImage';
 import { Public } from '../../decorators/public.decorator';
+import { Roles } from '../../decorators/roles.decorator';
 import { CreatePostImageDto } from './dto/create-post-image.dto';
 import { PostImageService } from './post-image.service';
 
+@Roles(ROLES.ADMIN, ROLES.OWNER)
 @Controller('/post-images')
 @ApiTags('post-images')
 export class PostImageController {

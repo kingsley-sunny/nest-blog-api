@@ -6,6 +6,8 @@ export interface FetchQuery {
   endDateCol?: string;
   filterBy?: string;
   page?: number;
+  orderBy?: string;
+  order?: 'asc' | 'desc';
 }
 
 export interface IBase {

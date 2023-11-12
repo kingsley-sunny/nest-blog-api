@@ -1,4 +1,10 @@
-import { HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { IResponse } from './base.interface';
 
 @Injectable()
@@ -17,6 +23,25 @@ export class BaseService {
       message,
       statusCode,
       timestamp: dateTime,
+    };
+  }
+
+  public static validateMulterFile(
+    size?: number,
+    type?: string,
+  ): MulterOptions {
+    return {
+      limits: { fileSize: size || 2_000_000 },
+      fileFilter(req, file, callback) {
+        if (!file.mimetype.includes(type || 'image')) {
+          const error = new InternalServerErrorException(
+            'File should be only image type',
+          );
+          callback(error, false);
+        }
+
+        callback(null, true);
+      },
     };
   }
 }

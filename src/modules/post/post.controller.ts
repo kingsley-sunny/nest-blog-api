@@ -43,7 +43,7 @@ export class PostController {
       isPaginate: false,
     }),
   })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', BaseService.validateMulterFile()))
   @ApiConsumes('multipart/form-data')
   async create(
     @Body() data: CreatePostDto,
@@ -97,7 +97,7 @@ export class PostController {
   })
   @ApiConsumes('multipart/form-data')
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', BaseService.validateMulterFile()))
   async update(
     @Param('id') id: number,
     @Body() data: UpdatePostDto,
