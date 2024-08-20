@@ -22,6 +22,7 @@ export class EnvironmentService {
       CLOUDINARY_KEY,
       CLOUDINARY_SECRET,
       CLOUDINARY_FOLDER,
+      NODE_ENV,
     } = process.env;
 
     return {
@@ -37,6 +38,7 @@ export class EnvironmentService {
       cloudinary_secret: CLOUDINARY_SECRET,
       cloudinary_name: CLOUDINARY_NAME,
       cloudinary_folder: CLOUDINARY_FOLDER,
+      node_env: NODE_ENV
     };
   }
 

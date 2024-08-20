@@ -1,26 +1,10 @@
-import { Global, Logger, Module } from '@nestjs/common';
-import Knex from 'knex';
-import { Model } from 'objection';
-import KnexConfig from '../../knexfile';
+import { Global, Module } from '@nestjs/common';
+import { DatabaseProvider } from './database.provider';
 
 @Global()
 @Module({
   imports: [],
-  providers: [
-    {
-      useFactory: () => {
-        Logger.log('initializing Knex', 'DatabaseModule');
-        const knex = Knex(KnexConfig);
-
-        // Give Instance of knex to the Objection
-        Model.knex(knex);
-
-        console.log('Successfully Created connection with the database');
-
-        return knex;
-      },
-      provide: Symbol.for('KnexConfig'),
-    },
-  ],
+  providers: [DatabaseProvider],
+  exports: [DatabaseProvider],
 })
 export class DatabaseModule {}

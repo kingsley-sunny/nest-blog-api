@@ -1,6 +1,6 @@
 import { EnvironmentService } from './src/config/environment/environment.service';
 
-const { dbHost, dbName, dbPassword, dbPort, dbUser } =
+const { dbHost, dbName, dbPassword, dbPort, dbUser, node_env } =
   EnvironmentService.getValues();
 
 const KnexConfig = {
@@ -13,12 +13,18 @@ const KnexConfig = {
     database: dbName,
   },
   migrations: {
-    directory: './src/database/migrations',
+    directory:
+      node_env === 'production' || node_env === 'staging'
+        ? './dist/src/database/migrations/'
+        : './src/database/migrations/',
     database: 'mysql',
     extension: 'ts',
   },
   seeds: {
-    directory: './src/database/seeds',
+    directory:
+      node_env === 'production' || node_env === 'staging'
+        ? './dist/src/database/seeds/'
+        : './src/database/seeds/',
     extension: 'ts',
   },
 };
