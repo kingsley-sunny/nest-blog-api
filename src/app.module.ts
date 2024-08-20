@@ -19,7 +19,7 @@ import { PostImageModule } from './modules/post-image';
 import { ReplyModule } from './modules/reply';
 import { ReplyLikeModule } from './modules/reply-like';
 import { UserRoleModule } from './modules/user-role';
-import { SocketGateway } from './socket.gateway';
+
 import { UtilsModule } from './utils/utils.module';
 
 @Module({
@@ -47,7 +47,6 @@ import { UtilsModule } from './utils/utils.module';
     AppService,
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
-    SocketGateway,
   ],
 })
 export class AppModule {}
