@@ -11,4 +11,5 @@ export interface EnvironmentInterface {
   cloudinary_secret: string;
   cloudinary_name: string;
   cloudinary_folder: string;
+  node_env: string;
 }

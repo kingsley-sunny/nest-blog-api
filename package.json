@@ -27,6 +27,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migrate-start": "npx knex migrate:up; nest start",
+    "migrate:prod": "node dist/src/database/database-setup",
     "start:migrate:prod": "yarn migrate:prod; node dist/src/main"
   },
   "dependencies": {
@@ -53,10 +54,13 @@
     "reflect-metadata": "^0.1.13",
     "resend": "^1.0.0",
     "rxjs": "^7.2.0",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "@types/multer": "^1.4.7",
+    "@types/node": "18.16.12",
+    "ts-node": "^10.0.0",
+    "@nestjs/cli": "^10.1.12"
   },
   "devDependencies": {
-    "@nestjs/cli": "^10.1.12",
     "@nestjs/platform-socket.io": "^10.3.2",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
@@ -67,8 +71,6 @@
     "@types/buffer-to-stream": "^1.0.0",
     "@types/express": "^4.17.13",
     "@types/jest": "29.5.1",
-    "@types/multer": "^1.4.7",
-    "@types/node": "18.16.12",
     "@types/passport-jwt": "^3.0.9",
     "@types/passport-local": "^1.0.35",
     "@types/supertest": "^2.0.11",
@@ -84,7 +86,6 @@
     "swc-loader": "^0.2.3",
     "ts-jest": "29.1.0",
     "ts-loader": "^9.2.3",
-    "ts-node": "^10.0.0",
     "tsconfig-paths": "4.2.0",
     "typescript": "^5.0.0"
   },
