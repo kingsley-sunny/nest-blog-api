@@ -36,6 +36,14 @@ export class PostModel extends BaseModel implements IPost {
           to: `${DATABASE_TABLES.likes}.post_id`,
         },
       },
+      lastLiked: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: LikeModel,
+        join: {
+          from: `${DATABASE_TABLES.posts}.id`,
+          to: `${DATABASE_TABLES.likes}.post_id`,
+        },
+      },
       image: {
         relation: Model.HasOneRelation,
         modelClass: PostImageModel,

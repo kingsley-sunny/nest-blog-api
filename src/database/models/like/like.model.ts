@@ -1,5 +1,7 @@
+import { Model, RelationMappings, RelationMappingsThunk } from 'objection';
 import { BaseModel } from '../../base/base.model';
 import { DATABASE_TABLES } from '../../database.tables';
+import { UserModel } from '../user/user.model';
 import { ILike } from './like.interface';
 import { LikeValidation } from './like.validation';
 
@@ -18,5 +20,18 @@ export class LikeModel extends BaseModel implements ILike {
 
   static get jsonSchema() {
     return LikeValidation;
+  }
+
+  static get relationMappings(): RelationMappings | RelationMappingsThunk {
+    return {
+      user: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: UserModel,
+        join: {
+          from: `${DATABASE_TABLES.likes}.user_id`,
+          to: `${DATABASE_TABLES.users}.id`,
+        },
+      },
+    };
   }
 }

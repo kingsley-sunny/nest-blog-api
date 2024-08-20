@@ -12,4 +12,12 @@ export class AppController {
       'this is fucking working',
     );
   }
+
+  @Get('/socket')
+  async socket() {
+    return await BaseService.transformResponse(
+      { name: 'this is fucking' },
+      'this is funckin',
+    );
+  }
 }

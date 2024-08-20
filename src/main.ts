@@ -38,6 +38,7 @@ class Server {
     Logger.log('configureSwagger', 'Main.ts');
 
     const config = new DocumentBuilder()
+      .addBearerAuth()
       .setTitle('Blog API')
       .setDescription(
         'An Api endpoints for a full functional Blog app (Personal Project)',
