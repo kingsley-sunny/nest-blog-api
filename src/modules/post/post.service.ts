@@ -61,10 +61,16 @@ export class PostService {
 
     try {
       const posts = await this.postRepository
-        .findSync({}, params, '[image]')
+        .findSync({}, params, '[image, lastLiked.[user], likes]')
+        .modifyGraph('lastLiked', (buider) => {
+          buider.orderBy('id', 'desc');
+        })
         .select(
           `${DATABASE_TABLES.posts}.*`,
-          this.postRepository.model.relatedQuery('likes').count().as('likes'),
+          this.postRepository.model
+            .relatedQuery('likes')
+            .count()
+            .as('likes_count'),
         );
 
       const paginatedPost = await this.postRepository.paginateData(
