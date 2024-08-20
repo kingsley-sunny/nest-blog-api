@@ -18,14 +18,20 @@ const KnexConfig = {
         ? './dist/src/database/migrations/'
         : './src/database/migrations/',
     database: 'mysql',
-    extension: 'ts',
+    extension:
+      node_env === 'production' || node_env === 'staging' ? 'js' : 'ts',
+    loadExtensions:
+      node_env === 'production' || node_env === 'staging' ? ['.js'] : ['.ts'],
   },
   seeds: {
     directory:
       node_env === 'production' || node_env === 'staging'
         ? './dist/src/database/seeds/'
         : './src/database/seeds/',
-    extension: 'ts',
+    extension:
+      node_env === 'production' || node_env === 'staging' ? 'js' : 'ts',
+    loadExtensions:
+      node_env === 'production' || node_env === 'staging' ? ['.js'] : ['.ts'],
   },
 };
 
