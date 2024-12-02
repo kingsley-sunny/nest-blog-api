@@ -38,7 +38,7 @@ export class EnvironmentService {
       cloudinary_secret: CLOUDINARY_SECRET,
       cloudinary_name: CLOUDINARY_NAME,
       cloudinary_folder: CLOUDINARY_FOLDER,
-      node_env: NODE_ENV
+      node_env: NODE_ENV,
     };
   }
 
